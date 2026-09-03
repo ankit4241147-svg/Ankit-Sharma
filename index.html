@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ankit Sharma · Research &amp; Innovation Portfolio</title>
+<meta name="description" content="Ankit Sharma — +2 Science candidate, researcher, robotics enthusiast, programmer and innovator. Currently involved in IASC (NASO) asteroid discovery research.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%230F1420%22/><circle cx=%2250%22 cy=%2250%22 r=%2216%22 fill=%22%23E8A33D%22/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#0B0F1A;
+  --panel:#121729;
+  --panel-2:#171D33;
+  --line:#242B45;
+  --accent:#E8A33D;
+  --accent-2:#4FD1C5;
+  --text:#ECEFF7;
+  --muted:#8E97B0;
+  --danger:#E2685A;
+  --ok:#5FBF8E;
+  --radius:14px;
+  --radius-sm:8px;
+  --maxw:1180px;
+  --font-display:'Space Grotesk', sans-serif;
+  --font-body:'IBM Plex Sans', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  margin:0 0 .5em 0;
+  line-height:1.15;
+  font-weight:600;
+  letter-spacing:-0.01em;
+}
+p{margin:0 0 1em 0; color:var(--muted); max-width:62ch;}
+a{color:inherit; text-decoration:none;}
+img{max-width:100%; display:block;}
+button{font-family:var(--font-body); cursor:pointer;}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+.section{padding:100px 0; border-top:1px solid var(--line); position:relative;}
+.section:first-of-type{border-top:none;}
+.eyebrow{font-family:var(--font-mono); font-size:13px; color:var(--accent-2); margin-bottom:14px; display:block;}
+.section-head{max-width:640px; margin-bottom:56px;}
+.section-head h2{font-size:clamp(28px,4vw,40px);}
+
+/* scroll reveal */
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+/* ============ NAV ============ */
+header.site-nav{
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  background:rgba(11,15,26,0.82); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{max-width:var(--maxw); margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between;}
+.brand{display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:600; font-size:17px;}
+.brand-mark{width:30px; height:30px; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--accent-2), var(--accent) 70%); flex:none;}
+nav.links{display:flex; gap:28px; align-items:center;}
+nav.links a{font-size:14.5px; color:var(--muted); transition:color .2s;}
+nav.links a:hover, nav.links a.active{color:var(--text);}
+.admin-btn{
+  width:36px; height:36px; border-radius:50%; border:1px solid var(--line); background:transparent;
+  color:var(--muted); display:flex; align-items:center; justify-content:center; transition:all .2s;
+}
+.admin-btn:hover{color:var(--accent); border-color:var(--accent);}
+.hamburger{display:none; background:none; border:none; color:var(--text); font-size:22px; padding:4px 8px;}
+@media (max-width: 900px){
+  nav.links{
+    position:fixed; top:64px; right:0; left:0; background:var(--panel);
+    flex-direction:column; align-items:flex-start; gap:0; padding:8px 0;
+    border-bottom:1px solid var(--line);
+    transform:translateY(-8px); opacity:0; pointer-events:none; transition:all .2s;
+  }
+  nav.links.open{transform:translateY(0); opacity:1; pointer-events:auto;}
+  nav.links a{padding:14px 24px; width:100%; border-bottom:1px solid var(--line);}
+  .hamburger{display:block;}
+}
+
+/* ============ HERO ============ */
+.hero{
+  min-height:100svh; display:flex; align-items:center; position:relative; overflow:hidden;
+  padding-top:90px; border-top:none;
+}
+#hero-canvas{position:absolute; inset:0; z-index:0; opacity:.55;}
+.hero-grid{
+  position:absolute; inset:0; z-index:0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse 70% 60% at 60% 30%, black, transparent);
+}
+.hero-inner{position:relative; z-index:1; max-width:var(--maxw); margin:0 auto; padding:60px 24px; width:100%;}
+.hero-tag{font-family:var(--font-mono); color:var(--accent-2); font-size:14px; margin-bottom:18px; display:flex; align-items:center; gap:10px;}
+.hero-tag .dot{width:7px; height:7px; border-radius:50%; background:var(--ok); box-shadow:0 0 0 4px rgba(95,191,142,0.15); animation:pulse 2.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.hero h1{font-size:clamp(40px,7vw,74px); max-width:16ch;}
+.hero h1 .cursive{color:var(--accent);}
+.hero .subtitle{font-family:var(--font-mono); font-size:clamp(14px,2vw,17px); color:var(--text); opacity:.85; margin-top:10px; letter-spacing:.02em;}
+.hero .desc{max-width:52ch; font-size:17px; margin-top:22px;}
+.hero-actions{display:flex; gap:14px; margin-top:36px; flex-wrap:wrap;}
+.btn{
+  display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px;
+  font-size:14.5px; font-weight:600; border:1px solid transparent; transition:all .2s;
+}
+.btn-primary{background:var(--accent); color:#181206;}
+.btn-primary:hover{background:#f3b45a; transform:translateY(-1px);}
+.btn-ghost{border-color:var(--line); color:var(--text);}
+.btn-ghost:hover{border-color:var(--accent-2); color:var(--accent-2);}
+.btn-sm{padding:9px 16px; font-size:13px; border-radius:8px;}
+.btn-danger{background:transparent; border:1px solid var(--danger); color:var(--danger);}
+.btn-danger:hover{background:rgba(226,104,90,.1);}
+.btn-block{width:100%; justify-content:center;}
+
+/* hero layout: text + animated profile photo */
+.hero-flex{display:flex; align-items:center; justify-content:space-between; gap:56px;}
+@media(max-width:900px){
+  .hero-flex{flex-direction:column; text-align:center; gap:40px;}
+  .hero-tag{justify-content:center;}
+  .hero .desc{margin-left:auto; margin-right:auto;}
+  .hero-actions{justify-content:center;}
+}
+.hero-text{flex:1; min-width:0;}
+
+/* orbiting profile photo element */
+.hero-photo-wrap{position:relative; width:320px; height:320px; flex:none;}
+@media(max-width:900px){.hero-photo-wrap{width:230px; height:230px;}}
+@media(max-width:420px){.hero-photo-wrap{width:190px; height:190px;}}
+.orbit-ring{position:absolute; inset:0; border:1px dashed rgba(232,163,61,0.25); border-radius:50%; animation:spin 40s linear infinite;}
+.orbit-ring.r2{inset:34px; border-color:rgba(79,209,197,0.2); animation-duration:28s; animation-direction:reverse;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.orbit-dot{position:absolute; width:10px; height:10px; border-radius:50%; background:var(--accent); top:0; left:50%; margin-left:-5px; box-shadow:0 0 12px var(--accent);}
+.hero-photo-core{
+  position:absolute; left:16%; right:16%; top:4%; bottom:4%;
+  border-radius:50% 50% 10px 10px / 32% 32% 8px 8px;
+  overflow:hidden;
+  background:radial-gradient(circle at 35% 30%, #2a3350, #10131f 70%);
+  border:2px solid rgba(232,163,61,0.4);
+  box-shadow:0 0 70px rgba(232,163,61,0.22), inset 0 0 30px rgba(79,209,197,0.15);
+  display:flex; align-items:center; justify-content:center;
+  animation: heroPhotoEnter .9s cubic-bezier(.16,1,.3,1) both, heroPhotoFloat 5s ease-in-out infinite .9s;
+}
+.hero-photo-core img{width:100%; height:100%; object-fit:cover;}
+.ph-fallback-hero{font-family:var(--font-display); font-size:54px; color:var(--muted); font-weight:600;}
+@keyframes heroPhotoEnter{from{opacity:0; transform:scale(.82) translateY(14px);} to{opacity:1; transform:scale(1) translateY(0);}}
+@keyframes heroPhotoFloat{0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);}}
+
+/* ============ ABOUT ============ */
+.about-grid{display:grid; grid-template-columns:280px 1fr; gap:56px; align-items:start;}
+@media(max-width:760px){.about-grid{grid-template-columns:1fr;}}
+.about-photo{
+  width:100%; aspect-ratio:1/1; border-radius:var(--radius); overflow:hidden; background:var(--panel);
+  border:1px solid var(--line); position:relative;
+}
+.about-photo img{width:100%; height:100%; object-fit:cover;}
+.about-photo .ph-fallback{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--muted); font-family:var(--font-mono); font-size:13px; text-align:center; padding:20px;}
+.edu-card{margin-top:18px; padding:16px; border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--panel);}
+.edu-card .k{font-family:var(--font-mono); color:var(--accent-2); font-size:12px; display:block; margin-bottom:4px;}
+.edu-card .v{font-weight:600; font-size:14.5px;}
+.interest-cards{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:32px;}
+@media(max-width:520px){.interest-cards{grid-template-columns:1fr;}}
+.icard{border:1px solid var(--line); border-radius:var(--radius-sm); padding:18px; background:var(--panel); transition:border-color .2s, transform .2s;}
+.icard:hover{border-color:var(--accent-2); transform:translateY(-2px);}
+.icard .ic-icon{width:32px; height:32px; margin-bottom:10px; color:var(--accent);}
+.icard h4{font-size:15px; margin-bottom:4px;}
+.icard p{font-size:13.5px; margin:0;}
+
+/* ============ TIMELINE (research/innovations/certs) ============ */
+.timeline{position:relative;}
+.timeline::before{content:'';position:absolute; left:120px; top:6px; bottom:6px; width:1px; background:var(--line);}
+@media(max-width:640px){.timeline::before{left:14px;}}
+.t-item{display:grid; grid-template-columns:120px 1fr; gap:32px; padding-bottom:56px; position:relative;}
+.t-item:last-child{padding-bottom:0;}
+@media(max-width:640px){.t-item{grid-template-columns:1fr; padding-left:32px;}}
+.t-date{font-family:var(--font-mono); font-size:13px; color:var(--accent-2); padding-top:6px; text-align:right;}
+@media(max-width:640px){.t-date{text-align:left; position:absolute; left:0; top:0; padding-top:0;}}
+.t-dot{position:absolute; left:116px; top:9px; width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px var(--bg);}
+@media(max-width:640px){.t-dot{left:10px;}}
+.t-card{
+  border:1px solid var(--line); border-radius:var(--radius); background:var(--panel);
+  overflow:hidden; display:grid; grid-template-columns:200px 1fr;
+}
+@media(max-width:720px){.t-card{grid-template-columns:1fr;}}
+.t-card .t-img{background:var(--panel-2); min-height:150px; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+.t-card .t-img img{width:100%; height:100%; object-fit:cover;}
+.t-card .t-img .noimg{color:var(--muted); font-size:24px;}
+.t-body{padding:20px 24px;}
+.t-body .status{display:inline-block; font-family:var(--font-mono); font-size:11px; padding:4px 10px; border-radius:999px; margin-bottom:10px; border:1px solid var(--line); color:var(--muted);}
+.status.ongoing,.status.development,.status.researching,.status.planned{color:var(--accent); border-color:rgba(232,163,61,.4);}
+.status.completed,.status.published{color:var(--ok); border-color:rgba(95,191,142,.4);}
+.status.prototype,.status.underresearch,.status.indevelopment{color:var(--accent-2); border-color:rgba(79,209,197,.4);}
+.t-body h3{font-size:19px; margin-bottom:8px;}
+.t-body p{font-size:14.5px; margin-bottom:14px;}
+.t-link{font-family:var(--font-mono); font-size:13px; color:var(--accent); display:inline-flex; gap:6px; align-items:center;}
+.t-link:hover{color:#f3b45a;}
+.empty-state{border:1px dashed var(--line); border-radius:var(--radius); padding:48px 24px; text-align:center; color:var(--muted); font-family:var(--font-mono); font-size:14px;}
+
+/* Upcoming */
+.upcoming-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px;}
+.up-card{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); overflow:hidden; position:relative;}
+.up-card .up-img{height:150px; background:var(--panel-2); overflow:hidden;}
+.up-card .up-img img{width:100%; height:100%; object-fit:cover;}
+.up-badge{position:absolute; top:14px; right:14px; background:var(--accent); color:#181206; font-family:var(--font-mono); font-size:10.5px; padding:5px 10px; border-radius:999px; font-weight:600; letter-spacing:.03em;}
+.up-body{padding:18px 20px;}
+.up-body h4{font-size:16px; margin-bottom:6px;}
+.up-body p{font-size:13.5px; margin-bottom:10px;}
+.up-meta{font-family:var(--font-mono); font-size:12px; color:var(--muted);}
+
+/* Certificates */
+.cert-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px;}
+.cert-card{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); overflow:hidden; cursor:pointer; transition:transform .2s, border-color .2s;}
+.cert-card:hover{transform:translateY(-3px); border-color:var(--accent);}
+.cert-img{height:160px; background:var(--panel-2); overflow:hidden;}
+.cert-img img{width:100%; height:100%; object-fit:cover;}
+.cert-body{padding:16px 18px;}
+.cert-date{font-family:var(--font-mono); font-size:11.5px; color:var(--accent-2); display:block; margin-bottom:6px;}
+.cert-body h4{font-size:15px; margin-bottom:4px;}
+.cert-body p{font-size:13px; margin:0; -webkit-line-clamp:2; display:-webkit-box; -webkit-box-orient:vertical; overflow:hidden;}
+
+/* Skills */
+.skills-list{display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+.skill-row{display:grid; grid-template-columns:1fr 120px; align-items:center; gap:20px; padding:26px 28px; background:var(--panel);}
+@media(max-width:560px){.skill-row{grid-template-columns:1fr 72px; padding:20px;}}
+.skill-text h4{font-size:18px; margin-bottom:6px; display:flex; align-items:center; gap:10px;}
+.skill-level{font-family:var(--font-mono); font-size:10.5px; color:var(--bg); background:var(--accent-2); padding:3px 9px; border-radius:999px; font-weight:600;}
+.skill-text p{font-size:13.5px; margin:0;}
+.skill-cat{font-family:var(--font-mono); font-size:11px; color:var(--muted); display:block; margin-bottom:6px;}
+.skill-logo{width:120px; height:80px; display:flex; align-items:center; justify-content:center;}
+@media(max-width:560px){.skill-logo{width:72px; height:60px;}}
+.skill-logo img{max-width:100%; max-height:100%; object-fit:contain; animation:float-logo 5s ease-in-out infinite; filter:drop-shadow(0 0 10px rgba(232,163,61,0.18)); transition:transform .25s;}
+.skill-row:hover .skill-logo img{transform:scale(1.08);}
+@keyframes float-logo{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.skill-logo .noimg{width:44px; height:44px; border-radius:8px; background:var(--panel-2); border:1px dashed var(--line);}
+
+/* Gallery */
+.gallery-grid{columns:3 220px; column-gap:14px;}
+@media(max-width:640px){.gallery-grid{columns:2 160px;}}
+.g-item{break-inside:avoid; margin-bottom:14px; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--line); cursor:pointer; position:relative; background:var(--panel);}
+.g-item img{width:100%; display:block; transition:transform .3s;}
+.g-item:hover img{transform:scale(1.04);}
+.g-cap{position:absolute; left:0; right:0; bottom:0; padding:10px 12px; background:linear-gradient(to top, rgba(0,0,0,.75), transparent); font-size:12px; opacity:0; transition:opacity .2s;}
+.g-item:hover .g-cap{opacity:1;}
+
+/* Contact */
+.contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px;}
+@media(max-width:800px){.contact-grid{grid-template-columns:1fr;}}
+.field{margin-bottom:18px;}
+.field label{display:block; font-size:13px; font-family:var(--font-mono); color:var(--muted); margin-bottom:7px;}
+.field input, .field textarea, .field select{
+  width:100%; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-sm);
+  padding:12px 14px; color:var(--text); font-family:var(--font-body); font-size:14.5px;
+}
+.field textarea{resize:vertical; min-height:110px;}
+.field input:focus, .field textarea:focus, .field select:focus{border-color:var(--accent-2);}
+.contact-info{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); padding:26px;}
+.contact-info .row{display:flex; gap:12px; align-items:flex-start; margin-bottom:18px;}
+.contact-info .row:last-child{margin-bottom:0;}
+.contact-info svg{flex:none; width:18px; height:18px; color:var(--accent); margin-top:2px;}
+.contact-info .lbl{font-family:var(--font-mono); font-size:11.5px; color:var(--muted); display:block;}
+.contact-info .val{font-size:14.5px;}
+.form-msg{font-size:13.5px; padding:10px 14px; border-radius:8px; margin-top:14px; display:none;}
+.form-msg.show{display:block;}
+.form-msg.ok{background:rgba(95,191,142,.12); color:var(--ok); border:1px solid rgba(95,191,142,.3);}
+.form-msg.err{background:rgba(226,104,90,.12); color:var(--danger); border:1px solid rgba(226,104,90,.3);}
+
+/* Footer */
+footer{border-top:1px solid var(--line); padding:36px 0; text-align:center;}
+footer p{margin:0; font-size:13px;}
+footer .foot-admin{margin-top:10px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted); opacity:.6;}
+footer .foot-admin button{background:none;border:none;color:var(--muted);text-decoration:underline;font-family:inherit;font-size:inherit;padding:0;}
+
+/* ============ MODALS (detail / lightbox / admin login) ============ */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(6,8,14,0.86); backdrop-filter:blur(4px);
+  z-index:500; display:none; align-items:flex-start; justify-content:center; padding:60px 20px; overflow-y:auto;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+  max-width:760px; width:100%; padding:0; position:relative; margin:auto;
+  animation:modal-in .25s ease;
+}
+@keyframes modal-in{from{opacity:0; transform:translateY(12px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);}}
+.modal-close{
+  position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%;
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text); display:flex; align-items:center; justify-content:center;
+  font-size:18px; z-index:2;
+}
+.modal-hero-img{width:100%; max-height:340px; object-fit:cover; background:var(--panel-2); border-radius:var(--radius) var(--radius) 0 0;}
+.modal-body{padding:30px 32px 36px;}
+.modal-body .status{margin-bottom:10px;}
+.modal-body h2{font-size:26px;}
+.modal-date{font-family:var(--font-mono); font-size:13px; color:var(--accent-2); margin-bottom:16px; display:block;}
+.modal-body .desc-full{color:var(--text); opacity:.9; max-width:none; white-space:pre-wrap; font-size:15px;}
+.modal-extra-imgs{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px; margin:20px 0;}
+.modal-extra-imgs img{width:100%; height:90px; object-fit:cover; border-radius:8px; border:1px solid var(--line); cursor:pointer;}
+.modal-actions{display:flex; gap:12px; margin-top:22px; flex-wrap:wrap;}
+.tech-tags{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0;}
+.tech-tag{font-family:var(--font-mono); font-size:11.5px; border:1px solid var(--line); color:var(--accent-2); padding:4px 10px; border-radius:999px;}
+
+.lightbox-overlay{position:fixed; inset:0; background:rgba(6,8,14,.94); z-index:600; display:none; align-items:center; justify-content:center; padding:30px;}
+.lightbox-overlay.open{display:flex;}
+.lightbox-overlay img{max-width:min(92vw,1000px); max-height:86vh; object-fit:contain; border-radius:8px;}
+.lightbox-close{position:absolute; top:20px; right:26px; color:#fff; font-size:28px; background:none; border:none;}
+.lightbox-cap{position:absolute; bottom:24px; left:0; right:0; text-align:center; color:var(--muted); font-family:var(--font-mono); font-size:13px;}
+
+/* ============ ADMIN ============ */
+#admin-login-overlay .modal-box{max-width:380px; padding:36px 32px;}
+#admin-login-overlay h2{font-size:20px; margin-bottom:4px;}
+#admin-login-overlay p{font-size:13.5px;}
+.admin-notice{font-size:12px; color:var(--accent); background:rgba(232,163,61,.08); border:1px solid rgba(232,163,61,.25); padding:10px 12px; border-radius:8px; margin-top:16px;}
+
+#admin-shell{
+  position:fixed; inset:0; background:var(--bg); z-index:400; display:none;
+  grid-template-columns:230px 1fr; overflow:hidden;
+}
+#admin-shell.open{display:grid;}
+@media(max-width:820px){#admin-shell{grid-template-columns:1fr;}}
+.admin-sidebar{
+  background:var(--panel); border-right:1px solid var(--line); padding:22px 16px; overflow-y:auto;
+  display:flex; flex-direction:column;
+}
+@media(max-width:820px){.admin-sidebar{position:fixed; z-index:10; top:0; bottom:0; left:0; width:230px; transform:translateX(-100%); transition:transform .2s;}
+  .admin-sidebar.open{transform:translateX(0);}}
+.admin-brand{font-family:var(--font-display); font-weight:600; font-size:15px; padding:8px 10px 20px;}
+.admin-nav-btn{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:none; border:none; color:var(--muted);
+  padding:11px 12px; border-radius:8px; font-size:14px; margin-bottom:2px;
+}
+.admin-nav-btn:hover{background:var(--panel-2); color:var(--text);}
+.admin-nav-btn.active{background:rgba(232,163,61,.12); color:var(--accent);}
+.admin-nav-spacer{flex:1;}
+.admin-main{overflow-y:auto; padding:28px 32px 80px;}
+@media(max-width:820px){.admin-main{padding:70px 18px 60px;}}
+.admin-topbar{display:none;}
+@media(max-width:820px){.admin-topbar{display:flex; position:fixed; top:0; left:0; right:0; height:56px; background:var(--panel); border-bottom:1px solid var(--line); align-items:center; padding:0 16px; z-index:20; gap:12px;}}
+.admin-h1{display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; flex-wrap:wrap; gap:12px;}
+.stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:36px;}
+.stat-card{border:1px solid var(--line); background:var(--panel); border-radius:var(--radius); padding:20px;}
+.stat-card .n{font-family:var(--font-display); font-size:30px; color:var(--accent);}
+.stat-card .l{font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-top:4px;}
+.admin-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.admin-table th{text-align:left; font-family:var(--font-mono); font-size:11.5px; color:var(--muted); padding:10px 12px; border-bottom:1px solid var(--line);}
+.admin-table td{padding:12px; border-bottom:1px solid var(--line); vertical-align:middle;}
+.admin-table tr:last-child td{border-bottom:none;}
+.row-actions{display:flex; gap:8px;}
+.thumb{width:48px; height:48px; border-radius:6px; object-fit:cover; background:var(--panel-2);}
+.card-panel{border:1px solid var(--line); background:var(--panel); border-radius:var(--radius); padding:24px; margin-bottom:24px;}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr;}}
+.form-grid .full{grid-column:1/-1;}
+.file-preview{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;}
+.file-preview img{width:64px; height:64px; object-fit:cover; border-radius:6px; border:1px solid var(--line);}
+.file-chip{font-family:var(--font-mono); font-size:12px; background:var(--panel-2); border:1px solid var(--line); padding:6px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:8px;}
+.file-chip button{background:none; border:none; color:var(--danger); font-size:14px;}
+.hint{font-size:12px; color:var(--muted); margin-top:4px;}
+.toast{position:fixed; bottom:24px; right:24px; background:var(--panel); border:1px solid var(--accent); color:var(--text); padding:13px 18px; border-radius:10px; z-index:700; font-size:13.5px; opacity:0; transform:translateY(10px); transition:all .25s; pointer-events:none;}
+.toast.show{opacity:1; transform:translateY(0);}
+
+.badge-unread{width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; margin-right:6px;}
+.msg-row.read{opacity:.55;}
+
+::-webkit-scrollbar{width:10px; height:10px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--line); border-radius:6px;}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="#home" class="brand"><span class="brand-mark"></span> Ankit Sharma</a>
+    <nav class="links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#innovations">Innovations</a>
+      <a href="#upcoming">Upcoming</a>
+      <a href="#certificates">Certificates</a>
+      <a href="#skills">Skills</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="admin-btn" id="adminOpenBtn" title="Admin" aria-label="Open admin panel">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </button>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-flex">
+      <div class="hero-text">
+        <div class="hero-tag"><span class="dot"></span> STATUS: OPEN TO RESEARCH &amp; COLLABORATION</div>
+        <h1>Hi, I'm <span class="cursive">Ankit Sharma</span></h1>
+        <div class="subtitle">RESEARCHER · ROBOTICS ENTHUSIAST · INNOVATOR</div>
+        <p class="desc">Exploring technology, astronomy, robotics and ideas that can shape the future — one experiment at a time.</p>
+        <div class="hero-actions">
+          <a href="#research" class="btn btn-primary">Explore My Research</a>
+          <a href="#innovations" class="btn btn-ghost">View Innovations</a>
+          <a href="#" class="btn btn-ghost" id="heroContactBtn" target="_blank" rel="noopener">Contact Me</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrap" aria-hidden="true">
+        <div class="orbit-ring" style="animation-duration:50s;"><div class="orbit-dot"></div></div>
+        <div class="orbit-ring r2" style="animation-duration:32s;"><div class="orbit-dot" style="background:var(--accent-2); box-shadow:0 0 12px var(--accent-2);"></div></div>
+        <div class="hero-photo-core" id="heroPhotoCore">
+          <div class="ph-fallback-hero">AS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section reveal" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>About Me</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <div class="about-photo" id="aboutPhotoWrap">
+          <div class="ph-fallback">Profile photo<br>not set yet</div>
+        </div>
+        <div class="edu-card">
+          <span class="k">EDUCATION</span>
+          <span class="v" id="aboutEdu">+2 Science Candidate — Aadikavi Bhanubhakta Campus</span>
+        </div>
+      </div>
+      <div>
+        <p id="aboutBio" style="font-size:16px; color:var(--text); opacity:.9; max-width:60ch;"></p>
+        <p id="aboutResearchStatement" style="font-size:15px;"></p>
+        <div class="interest-cards" id="interestCards"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEARCH ============ -->
+<section class="section reveal" id="research">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Research</h2>
+      <p>Active and past research work, including ongoing involvement with IASC (International Astronomical Search Collaboration) through NASO for asteroid discovery research.</p>
+    </div>
+    <div class="timeline" id="researchTimeline"></div>
+  </div>
+</section>
+
+<!-- ============ INNOVATIONS ============ -->
+<section class="section reveal" id="innovations">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Innovations</h2>
+      <p>Robotics, programming and engineering projects built while learning and experimenting.</p>
+    </div>
+    <div class="timeline" id="innovTimeline"></div>
+  </div>
+</section>
+
+<!-- ============ UPCOMING ============ -->
+<section class="section reveal" id="upcoming">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Upcoming Innovation</h2>
+      <p>Ideas currently being planned, researched or prototyped.</p>
+    </div>
+    <div class="upcoming-grid" id="upcomingGrid"></div>
+  </div>
+</section>
+
+<!-- ============ CERTIFICATES ============ -->
+<section class="section reveal" id="certificates">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Certificates</h2>
+    </div>
+    <div class="cert-grid" id="certGrid"></div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section class="section reveal" id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Skills</h2>
+    </div>
+    <div class="skills-list" id="skillsList"></div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="section reveal" id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Gallery</h2>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section reveal" id="contact">
+  <div class="wrap" style="text-align:center;">
+    <div class="section-head" style="margin-left:auto; margin-right:auto; text-align:center;">
+      <h2>Get In Touch</h2>
+      <p style="margin-left:auto; margin-right:auto;">Interested in research, robotics or a collaboration idea? Reach out directly by email.</p>
+    </div>
+    <a href="#" id="contactEmailBtn" class="btn btn-primary" target="_blank" rel="noopener" style="font-size:16px; padding:16px 34px;">Email Ankit</a>
+    <div id="contactExtraInfo" style="margin-top:22px; font-family:var(--font-mono); font-size:12.5px; color:var(--muted);"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© <span id="year"></span> Ankit Sharma — Research &amp; Innovation Portfolio.</p>
+    <div class="foot-admin"><button id="adminOpenBtn2">Admin access</button></div>
+  </div>
+</footer>
+
+<!-- ============ DETAIL MODAL ============ -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-box" id="detailModalBox">
+    <button class="modal-close" data-close="detailModal">✕</button>
+    <div id="detailModalContent"></div>
+  </div>
+</div>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-cap" id="lightboxCap"></div>
+</div>
+
+<!-- ============ ADMIN LOGIN ============ -->
+<div class="modal-overlay" id="admin-login-overlay">
+  <div class="modal-box">
+    <button class="modal-close" data-close="admin-login-overlay">✕</button>
+    <h2>Admin Login</h2>
+    <p>Sign in to manage portfolio content.</p>
+    <form id="adminLoginForm">
+      <div class="field"><label for="adminPass">Password</label><input id="adminPass" type="password" required autocomplete="current-password"></div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+      <div class="form-msg" id="adminLoginMsg"></div>
+    </form>
+    <div class="admin-notice" id="firstRunNotice" style="display:none;">
+      First-time setup: no admin password has been set yet. Enter a new password above to create it.
+    </div>
+  </div>
+</div>
+
+<!-- ============ ADMIN SHELL ============ -->
+<div id="admin-shell">
+  <div class="admin-topbar">
+    <button class="hamburger" id="adminSidebarToggle">☰</button>
+    <strong style="font-family:var(--font-display); font-size:14.5px;">Admin</strong>
+  </div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-brand">Ankit Sharma — Admin</div>
+    <button class="admin-nav-btn active" data-tab="dashboard">Dashboard</button>
+    <button class="admin-nav-btn" data-tab="about">About</button>
+    <button class="admin-nav-btn" data-tab="research">Research</button>
+    <button class="admin-nav-btn" data-tab="innovations">Innovations</button>
+    <button class="admin-nav-btn" data-tab="upcoming">Upcoming Innovation</button>
+    <button class="admin-nav-btn" data-tab="certificates">Certificates</button>
+    <button class="admin-nav-btn" data-tab="skills">Skills</button>
+    <button class="admin-nav-btn" data-tab="gallery">Gallery</button>
+    <button class="admin-nav-btn" data-tab="contactsettings">Contact Settings</button>
+    <button class="admin-nav-btn" data-tab="settings">Website Settings</button>
+    <div class="admin-nav-spacer"></div>
+    <a href="#home" class="admin-nav-btn" id="adminViewSite" style="color:var(--accent-2);">↩ View site</a>
+    <button class="admin-nav-btn" id="adminLogoutBtn" style="color:var(--danger);">Logout</button>
+  </aside>
+  <main class="admin-main" id="adminMain"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   ANKIT SHARMA PORTFOLIO — single-file app
+   Storage: IndexedDB (db name: ankitPortfolioDB)
+   Sections: about, research[], innovations[], upcoming[], certificates[],
+             skills[], gallery[], messages[], settings{}
+   ========================================================================= */
+(function(){
+"use strict";
+
+/* ---------------- IndexedDB LAYER ---------------- */
+const DB_NAME = 'ankitPortfolioDB';
+const DB_VERSION = 1;
+const STORES = ['research','innovations','upcoming','certificates','skills','gallery','messages','meta'];
+let db;
+
+function openDB(){
+  return new Promise((resolve,reject)=>{
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (e)=>{
+      const _db = e.target.result;
+      STORES.forEach(name=>{
+        if(!_db.objectStoreNames.contains(name)){
+          if(name==='meta'){ _db.createObjectStore(name,{keyPath:'key'}); }
+          else{ _db.createObjectStore(name,{keyPath:'id', autoIncrement:true}); }
+        }
+      });
+    };
+    req.onsuccess = (e)=>{ db = e.target.result; resolve(db); };
+    req.onerror = (e)=>{ reject(e); };
+  });
+}
+function tx(store, mode='readonly'){ return db.transaction(store, mode).objectStore(store); }
+function dbGetAll(store){ return new Promise((res,rej)=>{ const r=tx(store).getAll(); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+function dbGet(store,key){ return new Promise((res,rej)=>{ const r=tx(store).get(key); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+function dbPut(store,val){ return new Promise((res,rej)=>{ const r=tx(store,'readwrite').put(val); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+function dbAdd(store,val){ return new Promise((res,rej)=>{ const r=tx(store,'readwrite').add(val); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+function dbDelete(store,key){ return new Promise((res,rej)=>{ const r=tx(store,'readwrite').delete(key); r.onsuccess=()=>res(); r.onerror=()=>rej(r.error); }); }
+
+/* ---------------- SEED DEFAULTS ---------------- */
+const DEFAULT_ABOUT = {
+  key:'about',
+  name:'Ankit Sharma',
+  education:'+2 Science Candidate — Aadikavi Bhanubhakta Campus',
+  bio:"Hi, I'm Ankit Sharma, a +2 Science candidate at Aadikavi Bhanubhakta Campus with a strong interest in research, robotics, programming, astronomy, and innovation. I am continuously learning programming languages, robotics, and emerging technologies.",
+  researchStatement:"I am currently working on IASC (International Astronomical Search Collaboration) through NASO for asteroid discovery research. My interests focus on research, experimentation, technology, and the future invention of new things.",
+  photo:null,
+  interests:['Research','Robotics','Programming','Astronomy','Artificial Intelligence','IoT','Innovation','Future Technologies']
+};
+const DEFAULT_SETTINGS = {
+  key:'settings',
+  contactEmail:'as7577951@gmail.com',
+  contactPhone:'',
+  contactLocation:'',
+  adminPasswordHash:null,
+  sessionTimeoutMin:15
+};
+
+/* On a brand-new browser (no local data yet), try to auto-load
+   ./portfolio-data.json — the file you export from Admin and commit
+   next to index.html — so every visitor sees the same real content.
+   Falls back to empty placeholder content if that file isn't present
+   (e.g. when testing locally via file:// before it's been published). */
+async function seedIfEmpty(){
+  const aboutMeta = await dbGet('meta','about');
+  if(aboutMeta) return; // this browser already has data — never overwrite it automatically
+
+  let loadedFromFile = false;
+  try{
+    const res = await fetch('./portfolio-data.json', {cache:'no-store'});
+    if(res.ok){
+      const data = await res.json();
+      await applyImportedData(data, {stripPasswordHash:true, skipMessages:true});
+      loadedFromFile = true;
+    }
+  }catch(e){ /* no bundled file yet, or running from file:// — that's fine */ }
+
+  if(!(await dbGet('meta','about'))) await dbPut('meta', DEFAULT_ABOUT);
+  if(!(await dbGet('meta','settings'))) await dbPut('meta', DEFAULT_SETTINGS);
+  return loadedFromFile;
+}
+
+/* ---------------- UTILITIES ---------------- */
+function $(sel,ctx){ return (ctx||document).querySelector(sel); }
+function $all(sel,ctx){ return Array.from((ctx||document).querySelectorAll(sel)); }
+function esc(str){ return (str==null?'':String(str)).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function fmtDate(d){ if(!d) return ''; const dt=new Date(d+'T00:00:00'); if(isNaN(dt)) return d; return dt.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); }
+function statusClass(s){ return (s||'').toLowerCase().replace(/\s+/g,''); }
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toast._h); toast._h=setTimeout(()=>t.classList.remove('show'),2600);
+}
+const objectUrls = [];
+function trackedURL(blob){ if(!blob) return ''; const u=URL.createObjectURL(blob); objectUrls.push(u); return u; }
+function revokeAllTracked(){ objectUrls.splice(0).forEach(u=>URL.revokeObjectURL(u)); }
+
+async function fileToBlob(file){ return file; }
+function readFileAsDataURL(blob){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(blob); }); }
+function dataURLtoBlob(dataurl){
+  const arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]);
+  let n = bstr.length; const u8 = new Uint8Array(n);
+  while(n--){ u8[n]=bstr.charCodeAt(n); }
+  return new Blob([u8],{type:mime});
+}
+async function sha256(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ---------------- REVEAL ON SCROLL ---------------- */
+function initReveal(){
+  const els = $all('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('in')); return; }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  },{threshold:0.12});
+  els.forEach(e=>io.observe(e));
+}
+
+/* ---------------- HERO CANVAS (subtle starfield) ---------------- */
+function initHeroCanvas(){
+  const canvas = $('#hero-canvas'); if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w,h,stars=[];
+  function resize(){
+    w = canvas.width = canvas.offsetParent ? canvas.parentElement.offsetWidth : window.innerWidth;
+    h = canvas.height = canvas.parentElement.offsetHeight;
+    const count = Math.min(120, Math.floor((w*h)/14000));
+    stars = Array.from({length:count},()=>({
+      x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.4+0.3,
+      s:Math.random()*0.4+0.08, tw:Math.random()*Math.PI*2
+    }));
+  }
+  function draw(t){
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(st=>{
+      const alpha = 0.35 + Math.abs(Math.sin(st.tw + t/1200))*0.5;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(236,239,247,${alpha.toFixed(2)})`;
+      ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
+      ctx.fill();
+      if(!reduceMotion){ st.y += st.s; if(st.y>h) st.y=0; }
+    });
+    if(!reduceMotion) requestAnimationFrame(draw);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  draw(0);
+}
+
+/* ---------------- NAV ---------------- */
+function initNav(){
+  const hamburger = $('#hamburgerBtn'), links = $('#navLinks');
+  hamburger.addEventListener('click', ()=>links.classList.toggle('open'));
+  $all('nav.links a').forEach(a=>a.addEventListener('click', ()=>links.classList.remove('open')));
+  const sections = $all('main, section.section, .hero');
+  const navAs = $all('nav.links a');
+  const secIds = navAs.map(a=>a.getAttribute('href').slice(1));
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        navAs.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+en.target.id));
+      }
+    });
+  },{rootMargin:'-40% 0px -50% 0px'});
+  secIds.forEach(id=>{ const el=document.getElementById(id); if(el) io.observe(el); });
+}
+
+/* =========================================================================
+   RENDER: PUBLIC SECTIONS
+   ========================================================================= */
+async function renderAbout(){
+  const a = await dbGet('meta','about');
+  if(!a) return;
+  $('#aboutBio').textContent = a.bio||'';
+  $('#aboutResearchStatement').textContent = a.researchStatement||'';
+  $('#aboutEdu').textContent = a.education||'';
+  const wrap = $('#aboutPhotoWrap');
+  wrap.innerHTML = a.photo ? `<img src="${trackedURL(a.photo)}" alt="Photo of Ankit Sharma">` : `<div class="ph-fallback">Profile photo<br>not set yet</div>`;
+  const heroCore = $('#heroPhotoCore');
+  if(heroCore){ heroCore.innerHTML = a.photo ? `<img src="${trackedURL(a.photo)}" alt="Photo of Ankit Sharma">` : `<div class="ph-fallback-hero">AS</div>`; }
+  const icons = {
+    'Research':'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+    'Robotics':'<rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/><path d="M12 8V4M9 4h6"/>',
+    'Programming':'<path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/>',
+    'Astronomy':'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+    'Artificial Intelligence':'<rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+    'IoT':'<circle cx="12" cy="12" r="2"/><circle cx="12" cy="12" r="6" fill="none"/><circle cx="12" cy="12" r="10" fill="none"/>',
+    'Innovation':'<path d="M9 18h6M10 22h4M12 2a6 6 0 0 0-4 10.5c.6.6 1 1.3 1 2.5h6c0-1.2.4-1.9 1-2.5A6 6 0 0 0 12 2z"/>',
+    'Future Technologies':'<path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.5 5.5 21l2-7.5L2 9h7z"/>'
+  };
+  $('#interestCards').innerHTML = (a.interests||[]).map(name=>`
+    <div class="icard">
+      <svg class="ic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">${icons[name]||icons['Innovation']}</svg>
+      <h4>${esc(name)}</h4>
+      <p>Part of Ankit's ongoing learning &amp; project focus.</p>
+    </div>`).join('');
+}
+
+async function renderTimeline(store, containerId, kind){
+  const items = (await dbGetAll(store)).sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  const el = document.getElementById(containerId);
+  if(items.length===0){
+    el.innerHTML = `<div class="empty-state">${kind==='research'?'Research Coming Soon — no research projects have been published yet.':'New Innovations Coming Soon.'}</div>`;
+    return;
+  }
+  el.innerHTML = items.map(it=>{
+    const year = it.date ? it.date.slice(0,4) : '—';
+    const img = it.mainPhoto ? `<img src="${trackedURL(it.mainPhoto)}" alt="${esc(it.topic)}">` : `<div class="noimg">◐</div>`;
+    return `
+    <div class="t-item">
+      <div class="t-date">${esc(year)}<br><span style="color:var(--muted); font-size:11px;">${fmtDate(it.date)}</span></div>
+      <div class="t-dot"></div>
+      <div class="t-card">
+        <div class="t-img">${img}</div>
+        <div class="t-body">
+          <span class="status ${statusClass(it.status)}">${esc(it.status||'—')}</span>
+          <h3>${esc(it.topic)}</h3>
+          <p>${esc(it.shortDesc||'')}</p>
+          <a class="t-link" href="javascript:void(0)" data-detail="${store}" data-id="${it.id}">View Details →</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function renderUpcoming(){
+  const items = (await dbGetAll('upcoming')).sort((a,b)=>(a.expectedDate||'').localeCompare(b.expectedDate||''));
+  const el = $('#upcomingGrid');
+  if(items.length===0){ el.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">Upcoming innovations will be announced here.</div>`; return; }
+  el.innerHTML = items.map(it=>{
+    const img = it.photo ? `<img src="${trackedURL(it.photo)}" alt="${esc(it.topic)}">` : '';
+    return `<div class="up-card">
+      ${img?`<div class="up-img">${img}</div>`:''}
+      <span class="up-badge">COMING SOON</span>
+      <div class="up-body">
+        <h4>${esc(it.topic)}</h4>
+        <p>${esc(it.description||'')}</p>
+        <span class="status ${statusClass(it.status)}" style="margin-bottom:8px;">${esc(it.status||'Planned')}</span>
+        <div class="up-meta">Expected: ${it.expectedDate?fmtDate(it.expectedDate):'TBA'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function renderCertificates(){
+  const items = (await dbGetAll('certificates')).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const el = $('#certGrid');
+  if(items.length===0){ el.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">Certificates will be added soon.</div>`; return; }
+  el.innerHTML = items.map(it=>{
+    const img = it.photo ? `<img src="${trackedURL(it.photo)}" alt="${esc(it.topic)}">` : '';
+    return `<div class="cert-card" data-cert="${it.id}">
+      <div class="cert-img">${img}</div>
+      <div class="cert-body">
+        <span class="cert-date">${fmtDate(it.date)} · ${esc(it.issuer||'')}</span>
+        <h4>${esc(it.topic)}</h4>
+        <p>${esc(it.description||'')}</p>
+      </div>
+    </div>`;
+  }).join('');
+  $all('.cert-card',el).forEach(card=>{
+    card.addEventListener('click', async ()=>{
+      const item = await dbGet('certificates', Number(card.dataset.cert));
+      if(item && item.photo) openLightbox(trackedURL(item.photo), item.topic + (item.issuer?(' — '+item.issuer):''));
+    });
+  });
+}
+
+async function renderSkills(){
+  const items = (await dbGetAll('skills')).sort((a,b)=>(a.order||0)-(b.order||0));
+  const el = $('#skillsList');
+  if(items.length===0){ el.innerHTML = `<div class="empty-state">Skills will be added soon.</div>`; return; }
+  el.innerHTML = items.map(it=>{
+    const img = it.photo ? `<img src="${trackedURL(it.photo)}" alt="${esc(it.name)} logo">` : `<div class="noimg"></div>`;
+    return `<div class="skill-row">
+      <div class="skill-text">
+        ${it.category?`<span class="skill-cat">${esc(it.category)}</span>`:''}
+        <h4>${esc(it.name)} ${it.level?`<span class="skill-level">${esc(it.level)}</span>`:''}</h4>
+        <p>${esc(it.description||'')}</p>
+      </div>
+      <div class="skill-logo">${img}</div>
+    </div>`;
+  }).join('');
+}
+
+async function renderGallery(){
+  const items = (await dbGetAll('gallery')).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const el = $('#galleryGrid');
+  if(items.length===0){ el.innerHTML = `<div class="empty-state">Gallery Coming Soon.</div>`; return; }
+  el.innerHTML = items.map(it=>{
+    const img = it.photo ? trackedURL(it.photo) : '';
+    return `<div class="g-item" data-gal="${it.id}">
+      <img src="${img}" alt="${esc(it.title||'Gallery photo')}" loading="lazy">
+      <div class="g-cap">${esc(it.title||'')}</div>
+    </div>`;
+  }).join('');
+  $all('.g-item',el).forEach(item=>{
+    item.addEventListener('click', async ()=>{
+      const g = await dbGet('gallery', Number(item.dataset.gal));
+      if(g && g.photo) openLightbox(trackedURL(g.photo), [g.title, g.description].filter(Boolean).join(' — '));
+    });
+  });
+}
+
+async function renderContactInfo(){
+  const s = await dbGet('meta','settings');
+  const email = s.contactEmail || DEFAULT_CONTACT_EMAIL;
+  const url = gmailComposeUrl(email, `Portfolio inquiry for Ankit Sharma`);
+  const heroBtn = $('#heroContactBtn');
+  const contactBtn = $('#contactEmailBtn');
+  if(heroBtn) heroBtn.href = url;
+  if(contactBtn) contactBtn.href = url;
+  const extras = [];
+  if(s.contactPhone) extras.push(`PHONE: ${s.contactPhone}`);
+  if(s.contactLocation) extras.push(`LOCATION: ${s.contactLocation}`);
+  const extraEl = $('#contactExtraInfo');
+  if(extraEl) extraEl.textContent = extras.join('   ·   ');
+}
+
+async function renderAllPublic(){
+  revokeAllTracked();
+  await Promise.all([
+    renderAbout(),
+    renderTimeline('research','researchTimeline','research'),
+    renderTimeline('innovations','innovTimeline','innovations'),
+    renderUpcoming(),
+    renderCertificates(),
+    renderSkills(),
+    renderGallery(),
+    renderContactInfo()
+  ]);
+  bindDetailLinks();
+}
+
+/* ---------------- DETAIL MODAL ---------------- */
+function openModal(id){ $('#'+id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id){ $('#'+id).classList.remove('open'); document.body.style.overflow=''; }
+$all('[data-close]').forEach(btn=>btn.addEventListener('click', ()=>closeModal(btn.dataset.close)));
+$all('.modal-overlay').forEach(ov=>ov.addEventListener('click', (e)=>{ if(e.target===ov) closeModal(ov.id); }));
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape'){
+    $all('.modal-overlay.open').forEach(ov=>closeModal(ov.id));
+    closeLightbox();
+  }
+});
+
+function bindDetailLinks(){
+  $all('[data-detail]').forEach(a=>{
+    a.addEventListener('click', ()=> openDetail(a.dataset.detail, Number(a.dataset.id)));
+  });
+}
+
+async function openDetail(store, id){
+  const it = await dbGet(store, id);
+  if(!it) return;
+  const heroImg = it.mainPhoto ? `<img class="modal-hero-img" src="${trackedURL(it.mainPhoto)}" alt="${esc(it.topic)}">` : '';
+  const extra = (it.additionalPhotos||[]).map(b=>`<img src="${trackedURL(b)}" alt="Additional photo" data-lb="1">`).join('');
+  const tech = (it.tech||[]).length ? `<div class="tech-tags">${it.tech.map(t=>`<span class="tech-tag">${esc(t)}</span>`).join('')}</div>` : '';
+  const reportBtns = it.report ? `
+    <a class="btn btn-ghost btn-sm" href="${trackedURL(it.report.blob)}" target="_blank" rel="noopener">View Report</a>
+    <a class="btn btn-ghost btn-sm" href="${trackedURL(it.report.blob)}" download="${esc(it.report.name||'report.pdf')}">Download Report</a>` : '';
+  $('#detailModalContent').innerHTML = `
+    ${heroImg}
+    <div class="modal-body">
+      ${it.status?`<span class="status ${statusClass(it.status)}">${esc(it.status)}</span>`:''}
+      <h2>${esc(it.topic)}</h2>
+      <span class="modal-date">${fmtDate(it.date)}</span>
+      <p class="desc-full">${esc(it.detailedDesc || it.shortDesc || '')}</p>
+      ${tech}
+      ${extra?`<div class="modal-extra-imgs">${extra}</div>`:''}
+      <div class="modal-actions">
+        ${reportBtns}
+        <button class="btn btn-ghost btn-sm" data-close="detailModal">← Back to ${store==='research'?'Research':'Innovations'}</button>
+      </div>
+    </div>`;
+  $all('[data-lb]', $('#detailModalContent')).forEach(img=>{
+    img.style.cursor='pointer';
+    img.addEventListener('click', ()=>openLightbox(img.src, ''));
+  });
+  $all('[data-close]', $('#detailModalContent')).forEach(btn=>btn.addEventListener('click', ()=>closeModal('detailModal')));
+  openModal('detailModal');
+}
+
+/* ---------------- LIGHTBOX ---------------- */
+function openLightbox(src, cap){
+  $('#lightboxImg').src = src;
+  $('#lightboxCap').textContent = cap||'';
+  $('#lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){ $('#lightbox').classList.remove('open'); $('#lightboxImg').src=''; document.body.style.overflow=''; }
+$('#lightboxClose').addEventListener('click', closeLightbox);
+$('#lightbox').addEventListener('click', (e)=>{ if(e.target.id==='lightbox') closeLightbox(); });
+
+/* ---------------- CONTACT (direct Gmail compose) ---------------- */
+const DEFAULT_CONTACT_EMAIL = 'as7577951@gmail.com';
+function gmailComposeUrl(to, subject){
+  const params = new URLSearchParams({view:'cm', fs:'1', to});
+  if(subject) params.set('su', subject);
+  return `https://mail.google.com/mail/?${params.toString()}`;
+}
+
+/* =========================================================================
+   ADMIN AUTH
+   ========================================================================= */
+const SESSION_KEY = 'ankitAdminSession';
+let sessionTimer = null;
+
+async function isFirstRun(){ const s = await dbGet('meta','settings'); return !s.adminPasswordHash; }
+
+async function handleAdminLogin(password){
+  const s = await dbGet('meta','settings');
+  if(!s.adminPasswordHash){
+    if(password.length < 6){ throw new Error('Choose a password with at least 6 characters.'); }
+    const hash = await sha256(password);
+    s.adminPasswordHash = hash;
+    await dbPut('meta', s);
+    startSession();
+    return;
+  }
+  const hash = await sha256(password);
+  if(hash !== s.adminPasswordHash){ throw new Error('Incorrect password.'); }
+  startSession();
+}
+
+function startSession(){
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify({loggedIn:true, ts:Date.now()}));
+  resetSessionTimer();
+}
+function isSessionActive(){
+  const raw = sessionStorage.getItem(SESSION_KEY);
+  if(!raw) return false;
+  try{ return JSON.parse(raw).loggedIn === true; }catch(e){ return false; }
+}
+async function resetSessionTimer(){
+  clearTimeout(sessionTimer);
+  const s = await dbGet('meta','settings');
+  const mins = (s && s.sessionTimeoutMin) || 15;
+  sessionTimer = setTimeout(()=>{ adminLogout(true); }, mins*60*1000);
+}
+function endSession(){ sessionStorage.removeItem(SESSION_KEY); clearTimeout(sessionTimer); }
+
+function adminLogout(timedOut){
+  endSession();
+  $('#admin-shell').classList.remove('open');
+  document.body.style.overflow='';
+  if(timedOut) toast('Session timed out — logged out for security.');
+  else toast('Logged out.');
+}
+
+['click','keydown','mousemove'].forEach(evt=>{
+  document.addEventListener(evt, ()=>{ if(isSessionActive()) resetSessionTimer(); }, {passive:true});
+});
+
+$('#adminOpenBtn').addEventListener('click', openAdminEntry);
+$('#adminOpenBtn2').addEventListener('click', openAdminEntry);
+async function openAdminEntry(){
+  if(isSessionActive()){ openAdminShell(); return; }
+  $('#firstRunNotice').style.display = (await isFirstRun()) ? 'block' : 'none';
+  $('#adminLoginMsg').className='form-msg';
+  $('#adminPass').value='';
+  openModal('admin-login-overlay');
+  setTimeout(()=>$('#adminPass').focus(),50);
+}
+$('#adminLoginForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const msgEl = $('#adminLoginMsg');
+  try{
+    await handleAdminLogin($('#adminPass').value);
+    closeModal('admin-login-overlay');
+    openAdminShell();
+  }catch(err){
+    msgEl.className='form-msg show err';
+    msgEl.textContent = err.message || 'Login failed.';
+  }
+});
+$('#adminLogoutBtn').addEventListener('click', ()=>adminLogout(false));
+$('#adminViewSite').addEventListener('click', ()=>{ $('#admin-shell').classList.remove('open'); document.body.style.overflow=''; });
+$('#adminSidebarToggle').addEventListener('click', ()=>$('#adminSidebar').classList.toggle('open'));
+
+function openAdminShell(){
+  document.body.style.overflow='hidden';
+  $('#admin-shell').classList.add('open');
+  setAdminTab('dashboard');
+}
+
+/* =========================================================================
+   ADMIN TABS / RENDERING
+   ========================================================================= */
+$all('.admin-nav-btn[data-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>setAdminTab(btn.dataset.tab));
+});
+function setAdminTab(tab){
+  $all('.admin-nav-btn[data-tab]').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  $('#adminSidebar').classList.remove('open');
+  renderAdminTab(tab);
+}
+
+async function renderAdminTab(tab){
+  const main = $('#adminMain');
+  main.innerHTML = '<p style="font-family:var(--font-mono); font-size:13px;">Loading…</p>';
+  const renderers = {
+    dashboard: renderAdminDashboard,
+    about: renderAdminAbout,
+    research: ()=>renderAdminCrudList('research', researchFieldConfig, 'Research'),
+    innovations: ()=>renderAdminCrudList('innovations', innovationFieldConfig, 'Innovation'),
+    upcoming: ()=>renderAdminCrudList('upcoming', upcomingFieldConfig, 'Upcoming Innovation'),
+    certificates: ()=>renderAdminCrudList('certificates', certificateFieldConfig, 'Certificate'),
+    skills: renderAdminSkills,
+    gallery: renderAdminGallery,
+    contactsettings: renderAdminContactSettings,
+    settings: renderAdminSettings
+  };
+  await (renderers[tab] || renderAdminDashboard)();
+}
+
+async function renderAdminDashboard(){
+  const [research, innovations, upcoming, certificates, skills, gallery] = await Promise.all(
+    ['research','innovations','upcoming','certificates','skills','gallery'].map(dbGetAll)
+  );
+  $('#adminMain').innerHTML = `
+    <div class="admin-h1"><h2 style="margin:0;">Dashboard</h2></div>
+    <div class="stat-grid">
+      ${statCard('Research', research.length)}
+      ${statCard('Innovations', innovations.length)}
+      ${statCard('Upcoming', upcoming.length)}
+      ${statCard('Certificates', certificates.length)}
+      ${statCard('Skills', skills.length)}
+      ${statCard('Gallery Photos', gallery.length)}
+    </div>
+    <div class="card-panel" style="border-color:rgba(232,163,61,.4);">
+      <h3 style="margin-bottom:6px;">Publish to GitHub Pages</h3>
+      <p style="margin-bottom:14px;">This site stores everything in <em>this browser only</em>. For visitors on GitHub Pages to see your real content, download <code style="font-family:var(--font-mono);">portfolio-data.json</code> below and commit it to the same folder as <code style="font-family:var(--font-mono);">index.html</code> in your repo. New visitors' browsers will load it automatically. Your admin password is never included in this file.</p>
+      <button class="btn btn-primary btn-sm" id="exportPublicBtn">Export Public Data (portfolio-data.json)</button>
+      <div class="hint" id="publicExportHint" style="margin-top:10px;"></div>
+    </div>
+    <div class="card-panel">
+      <h3 style="margin-bottom:6px;">Personal Backup</h3>
+      <p style="margin-bottom:14px;">Export a full personal backup (includes your admin password hash — keep this file private, do not commit it to a public repo), or restore from a previous backup.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" id="exportBtn">Export Portfolio Data</button>
+        <label class="btn btn-ghost btn-sm" style="margin:0;">Import Portfolio Data<input type="file" accept=".json" id="importInput" style="display:none;"></label>
+      </div>
+      <div class="hint" id="backupHint" style="margin-top:10px;"></div>
+    </div>`;
+  $('#exportBtn').addEventListener('click', exportBackup);
+  $('#exportPublicBtn').addEventListener('click', exportPublicData);
+  $('#importInput').addEventListener('change', (e)=>{ if(e.target.files[0]) importBackup(e.target.files[0]); });
+}
+function statCard(label, n){ return `<div class="stat-card"><div class="n">${n}</div><div class="l">${label.toUpperCase()}</div></div>`; }
+
+/* ---- About admin ---- */
+async function renderAdminAbout(){
+  const a = await dbGet('meta','about');
+  $('#adminMain').innerHTML = `
+    <div class="admin-h1"><h2 style="margin:0;">About</h2></div>
+    <div class="card-panel">
+      <form id="aboutForm">
+        <div class="form-grid">
+          <div class="field"><label>Name</label><input name="name" value="${esc(a.name)}" required></div>
+          <div class="field"><label>Education</label><input name="education" value="${esc(a.education)}"></div>
+          <div class="field full"><label>Short Biography</label><textarea name="bio">${esc(a.bio)}</textarea></div>
+          <div class="field full"><label>Current Research Statement</label><textarea name="researchStatement">${esc(a.researchStatement)}</textarea></div>
+          <div class="field full"><label>Interests (comma-separated)</label><input name="interests" value="${esc((a.interests||[]).join(', '))}"></div>
+          <div class="field full">
+            <label>Profile Photo</label>
+            <input type="file" name="photo" accept="image/*">
+            <div class="file-preview" id="aboutPhotoPreview">${a.photo?`<img src="${trackedURL(a.photo)}">`:''}</div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Save About</button>
+      </form>
+    </div>`;
+  const form = $('#aboutForm');
+  form.photo.addEventListener('change', ()=>{
+    const f=form.photo.files[0]; if(!f) return;
+    $('#aboutPhotoPreview').innerHTML = `<img src="${URL.createObjectURL(f)}">`;
+  });
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(form);
+    a.name = fd.get('name'); a.education = fd.get('education'); a.bio = fd.get('bio');
+    a.researchStatement = fd.get('researchStatement');
+    a.interests = fd.get('interests').split(',').map(s=>s.trim()).filter(Boolean);
+    const file = form.photo.files[0];
+    if(file) a.photo = await fileToBlob(file);
+    await dbPut('meta', a);
+    toast('About section saved.');
+    renderAllPublic();
+  });
+}
+
+/* ---- Generic CRUD list (research / innovations / upcoming / certificates) ---- */
+const researchFieldConfig = {
+  title:'Research', dateField:'date', dateLabel:'Research Date',
+  fields:[
+    {key:'topic', label:'Research Paper Topic', type:'text', required:true},
+    {key:'shortDesc', label:'Short Description', type:'textarea'},
+    {key:'detailedDesc', label:'Detailed Description', type:'textarea', full:true},
+    {key:'date', label:'Date', type:'date'},
+    {key:'status', label:'Status', type:'select', options:['Ongoing','Completed','Published','Under Research']},
+    {key:'mainPhoto', label:'Main Research Photo', type:'image'},
+    {key:'additionalPhotos', label:'Additional Photos', type:'images'},
+    {key:'report', label:'Research Report (PDF)', type:'file'}
+  ]
+};
+const innovationFieldConfig = {
+  title:'Innovation', dateField:'date', dateLabel:'Date',
+  fields:[
+    {key:'topic', label:'Innovation Topic', type:'text', required:true},
+    {key:'shortDesc', label:'Short Description', type:'textarea'},
+    {key:'detailedDesc', label:'Detailed Description', type:'textarea', full:true},
+    {key:'date', label:'Date', type:'date'},
+    {key:'status', label:'Status', type:'select', options:['Concept','Development','Prototype','Completed']},
+    {key:'tech', label:'Technologies Used (comma-separated)', type:'tags'},
+    {key:'mainPhoto', label:'Main Photo', type:'image'},
+    {key:'additionalPhotos', label:'Additional Photos', type:'images'},
+    {key:'report', label:'Report (optional)', type:'file'}
+  ]
+};
+const upcomingFieldConfig = {
+  title:'Upcoming Innovation', dateField:'expectedDate', dateLabel:'Expected Timeline',
+  fields:[
+    {key:'topic', label:'Topic', type:'text', required:true},
+    {key:'description', label:'Description', type:'textarea', full:true},
+    {key:'expectedDate', label:'Expected Date', type:'date'},
+    {key:'status', label:'Status', type:'select', options:['Planned','In Development','Researching','Prototype']},
+    {key:'photo', label:'Image (optional)', type:'image'}
+  ]
+};
+const certificateFieldConfig = {
+  title:'Certificate', dateField:'date', dateLabel:'Certificate Date',
+  fields:[
+    {key:'topic', label:'Certificate Topic', type:'text', required:true},
+    {key:'description', label:'Description', type:'textarea', full:true},
+    {key:'issuer', label:'Issuing Organization', type:'text'},
+    {key:'date', label:'Date', type:'date'},
+    {key:'photo', label:'Certificate Photo', type:'image'},
+    {key:'report', label:'Certificate Document (optional)', type:'file'}
+  ]
+};
+
+async function renderAdminCrudList(store, config, entityLabel){
+  const items = (await dbGetAll(store)).sort((a,b)=>(b[config.dateField]||'').localeCompare(a[config.dateField]||''));
+  const main = $('#adminMain');
+  main.innerHTML = `
+    <div class="admin-h1"><h2 style="margin:0;">${config.title}</h2><button class="btn btn-primary btn-sm" id="addNewBtn">+ Add ${entityLabel}</button></div>
+    <div id="formHost"></div>
+    <div class="card-panel" style="padding:0; overflow-x:auto;">
+      <table class="admin-table">
+        <thead><tr><th></th><th>Topic</th><th>${config.dateLabel}</th><th>Status</th><th style="text-align:right;">Actions</th></tr></thead>
+        <tbody>
+        ${items.length? items.map(it=>`
+          <tr>
+            <td>${it.mainPhoto||it.photo?`<img class="thumb" src="${trackedURL(it.mainPhoto||it.photo)}">`:''}</td>
+            <td>${esc(it.topic)}</td>
+            <td>${fmtDate(it[config.dateField])}</td>
+            <td>${esc(it.status||'—')}</td>
+            <td class="row-actions" style="justify-content:flex-end;">
+              <button class="btn btn-ghost btn-sm" data-preview="${it.id}">Preview</button>
+              <button class="btn btn-ghost btn-sm" data-edit="${it.id}">Edit</button>
+              <button class="btn btn-danger btn-sm" data-del="${it.id}">Delete</button>
+            </td>
+          </tr>`).join('') : `<tr><td colspan="5" style="text-align:center; color:var(--muted); padding:30px;">No entries yet.</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+  $('#addNewBtn').addEventListener('click', ()=>showCrudForm(store, config, null));
+  $all('[data-edit]').forEach(b=>b.addEventListener('click', async ()=>{
+    const it = await dbGet(store, Number(b.dataset.edit)); showCrudForm(store, config, it);
+  }));
+  $all('[data-del]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(confirm(`Delete this ${entityLabel.toLowerCase()}? This cannot be undone.`)){
+      await dbDelete(store, Number(b.dataset.del));
+      toast(`${entityLabel} deleted.`);
+      renderAdminCrudList(store, config, entityLabel);
+      renderAllPublic();
+    }
+  }));
+  $all('[data-preview]').forEach(b=>b.addEventListener('click', ()=>{
+    const id = Number(b.dataset.preview);
+    openDetail(store==='upcoming'||store==='certificates' ? store : store, id).catch(()=>{});
+    if(store==='research'||store==='innovations') openDetail(store, id);
+    else toast('Preview available on the public page for this item type.');
+  }));
+}
+
+function fieldInputHTML(f, val){
+  const v = val==null?'':val;
+  if(f.type==='textarea') return `<textarea name="${f.key}">${esc(v)}</textarea>`;
+  if(f.type==='date') return `<input type="date" name="${f.key}" value="${esc(v)}">`;
+  if(f.type==='select') return `<select name="${f.key}">${f.options.map(o=>`<option ${o===v?'selected':''}>${o}</option>`).join('')}</select>`;
+  if(f.type==='tags') return `<input name="${f.key}" value="${esc(Array.isArray(v)?v.join(', '):v)}">`;
+  return `<input name="${f.key}" value="${esc(v)}" ${f.required?'required':''}>`;
+}
+
+async function showCrudForm(store, config, existing){
+  const host = $('#formHost');
+  const isEdit = !!existing;
+  const data = existing || {};
+  host.innerHTML = `
+    <div class="card-panel">
+      <h3 style="margin-bottom:16px;">${isEdit?'Edit':'Add'} ${config.title}</h3>
+      <form id="crudForm">
+        <div class="form-grid">
+          ${config.fields.map(f=>{
+            if(f.type==='image' || f.type==='images' || f.type==='file'){
+              return `<div class="field full">
+                <label>${f.label}</label>
+                <input type="file" name="${f.key}" accept="${f.type==='file'?'application/pdf':'image/*'}" ${f.type==='images'?'multiple':''}>
+                <div class="file-preview" data-preview-for="${f.key}"></div>
+              </div>`;
+            }
+            return `<div class="field ${f.full?'full':''}"><label>${f.label}</label>${fieldInputHTML(f, data[f.key])}</div>`;
+          }).join('')}
+        </div>
+        <div style="display:flex; gap:10px; margin-top:16px;">
+          <button class="btn btn-primary btn-sm" type="submit">Save</button>
+          <button class="btn btn-ghost btn-sm" type="button" id="cancelForm">Cancel</button>
+        </div>
+      </form>
+    </div>`;
+
+  // populate existing file previews
+  config.fields.forEach(f=>{
+    if(f.type==='image' && data[f.key]){
+      $(`[data-preview-for="${f.key}"]`).innerHTML = `<img src="${trackedURL(data[f.key])}">`;
+    }
+    if(f.type==='images' && data[f.key] && data[f.key].length){
+      $(`[data-preview-for="${f.key}"]`).innerHTML = data[f.key].map(b=>`<img src="${trackedURL(b)}">`).join('');
+    }
+    if(f.type==='file' && data[f.key]){
+      $(`[data-preview-for="${f.key}"]`).innerHTML = `<span class="file-chip">${esc(data[f.key].name||'file')}</span>`;
+    }
+  });
+
+  const form = $('#crudForm');
+  config.fields.forEach(f=>{
+    if(f.type==='image' || f.type==='file'){
+      form[f.key].addEventListener('change', ()=>{
+        const file = form[f.key].files[0]; if(!file) return;
+        const prev = $(`[data-preview-for="${f.key}"]`);
+        prev.innerHTML = f.type==='file' ? `<span class="file-chip">${esc(file.name)}</span>` : `<img src="${URL.createObjectURL(file)}">`;
+      });
+    }
+    if(f.type==='images'){
+      form[f.key].addEventListener('change', ()=>{
+        const files = Array.from(form[f.key].files);
+        $(`[data-preview-for="${f.key}"]`).innerHTML = files.map(file=>`<img src="${URL.createObjectURL(file)}">`).join('');
+      });
+    }
+  });
+
+  $('#cancelForm').addEventListener('click', ()=>{ host.innerHTML=''; });
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(form);
+    const record = isEdit ? {...data} : {};
+    for(const f of config.fields){
+      if(f.type==='image'){
+        const file = form[f.key].files[0];
+        if(file) record[f.key] = await fileToBlob(file);
+      } else if(f.type==='images'){
+        const files = Array.from(form[f.key].files);
+        if(files.length) record[f.key] = await Promise.all(files.map(fileToBlob));
+      } else if(f.type==='file'){
+        const file = form[f.key].files[0];
+        if(file) record[f.key] = {name:file.name, blob: await fileToBlob(file)};
+      } else if(f.type==='tags'){
+        record[f.key] = fd.get(f.key).split(',').map(s=>s.trim()).filter(Boolean);
+      } else {
+        record[f.key] = fd.get(f.key);
+      }
+    }
+    if(isEdit){ record.id = existing.id; await dbPut(store, record); }
+    else { await dbAdd(store, record); }
+    toast(`${config.title} saved.`);
+    host.innerHTML='';
+    renderAdminCrudList(store, config, config.title);
+    renderAllPublic();
+  });
+}
+
+/* ---- Skills admin (with reorder) ---- */
+async function renderAdminSkills(){
+  const items = (await dbGetAll('skills')).sort((a,b)=>(a.order||0)-(b.order||0));
+  const main = $('#adminMain');
+  main.innerHTML = `
+    <div class="admin-h1"><h2 style="margin:0;">Skills</h2><button class="btn btn-primary btn-sm" id="addSkillBtn">+ Add Skill</button></div>
+    <div id="skillFormHost"></div>
+    <div class="card-panel" style="padding:0;">
+      <table class="admin-table">
+        <thead><tr><th></th><th>Name</th><th>Category</th><th>Level</th><th style="text-align:right;">Actions</th></tr></thead>
+        <tbody>
+        ${items.length? items.map((it,i)=>`
+          <tr>
+            <td>${it.photo?`<img class="thumb" src="${trackedURL(it.photo)}">`:''}</td>
+            <td>${esc(it.name)}</td>
+            <td>${esc(it.category||'—')}</td>
+            <td>${esc(it.level||'—')}</td>
+            <td class="row-actions" style="justify-content:flex-end;">
+              <button class="btn btn-ghost btn-sm" data-up="${it.id}" ${i===0?'disabled':''}>↑</button>
+              <button class="btn btn-ghost btn-sm" data-down="${it.id}" ${i===items.length-1?'disabled':''}>↓</button>
+              <button class="btn btn-ghost btn-sm" data-edit="${it.id}">Edit</button>
+              <button class="btn btn-danger btn-sm" data-del="${it.id}">Delete</button>
+            </td>
+          </tr>`).join('') : `<tr><td colspan="5" style="text-align:center; color:var(--muted); padding:30px;">No skills yet.</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+  $('#addSkillBtn').addEventListener('click', ()=>showSkillForm(null, items.length));
+  $all('[data-edit]').forEach(b=>b.addEventListener('click', async ()=>{ showSkillForm(await dbGet('skills', Number(b.dataset.edit))); }));
+  $all('[data-del]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(confirm('Delete this skill?')){ await dbDelete('skills', Number(b.dataset.del)); toast('Skill deleted.'); renderAdminSkills(); renderAllPublic(); }
+  }));
+  $all('[data-up]').forEach(b=>b.addEventListener('click', ()=>moveSkill(Number(b.dataset.up), items, -1)));
+  $all('[data-down]').forEach(b=>b.addEventListener('click', ()=>moveSkill(Number(b.dataset.down), items, 1)));
+}
+async function moveSkill(id, items, dir){
+  const idx = items.findIndex(i=>i.id===id);
+  const swapWith = idx+dir;
+  if(swapWith<0 || swapWith>=items.length) return;
+  const a=items[idx], b=items[swapWith];
+  const tmp = a.order||0; a.order = b.order||0; b.order = tmp;
+  if(a.order===b.order){ a.order=idx; b.order=swapWith; } // ensure distinct
+  await dbPut('skills', a); await dbPut('skills', b);
+  renderAdminSkills(); renderAllPublic();
+}
+async function showSkillForm(existing, nextOrder){
+  const host = $('#skillFormHost');
+  const data = existing || {order: nextOrder||0};
+  host.innerHTML = `
+    <div class="card-panel">
+      <h3 style="margin-bottom:16px;">${existing?'Edit':'Add'} Skill</h3>
+      <form id="skillForm">
+        <div class="form-grid">
+          <div class="field"><label>Skill Name</label><input name="name" value="${esc(data.name)}" required></div>
+          <div class="field"><label>Category</label><input name="category" value="${esc(data.category)}" placeholder="e.g. Programming"></div>
+          <div class="field"><label>Skill Level</label><input name="level" value="${esc(data.level)}" placeholder="e.g. Intermediate"></div>
+          <div class="field full"><label>Skill Description</label><textarea name="description">${esc(data.description)}</textarea></div>
+          <div class="field full">
+            <label>Skill Logo / Photo</label>
+            <input type="file" name="photo" accept="image/*">
+            <div class="file-preview" id="skillPhotoPreview">${data.photo?`<img src="${trackedURL(data.photo)}">`:''}</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:16px;">
+          <button class="btn btn-primary btn-sm" type="submit">Save Skill</button>
+          <button class="btn btn-ghost btn-sm" type="button" id="cancelSkill">Cancel</button>
+        </div>
+      </form>
+    </div>`;
+  const form = $('#skillForm');
+  form.photo.addEventListener('change', ()=>{ const f=form.photo.files[0]; if(f) $('#skillPhotoPreview').innerHTML=`<img src="${URL.createObjectURL(f)}">`; });
+  $('#cancelSkill').addEventListener('click', ()=>host.innerHTML='');
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(form);
+    const rec = existing ? {...existing} : {order: nextOrder||0};
+    rec.name = fd.get('name'); rec.category = fd.get('category'); rec.level = fd.get('level'); rec.description = fd.get('description');
+    const file = form.photo.files[0];
+    if(file) rec.photo = await fileToBlob(file);
+    if(existing){ rec.id = existing.id; await dbPut('skills', rec); } else { await dbAdd('skills', rec); }
+    toast('Skill saved.');
+    host.innerHTML='';
+    renderAdminSkills();
+    renderAllPublic();
+  });
+}
+
+/* ---- Gallery admin ---- */
+async function renderAdminGallery(){
+  const items = (await dbGetAll('gallery')).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const main = $('#adminMain');
+  main.innerHTML = `
+    <div class="admin-h1"><h2 style="margin:0;">Gallery</h2></div>
+    <div class="card-panel">
+      <h3 style="margin-bottom:10px; font-size:15px;">Upload photos</h3>
+      <form id="galUploadForm">
+        <div class="form-grid">
+          <div class="field full"><label>Photos (you can select multiple)</label><input type="file" name="photos" accept="image/*" multiple required></div>
+          <div class="field"><label>Title (applied to all if multiple)</label><input name="title"></div>
+          <div class="field"><label>Date</label><input type="date" name="date"></div>
+          <div class="field full"><label>Description</label><textarea name="description"></textarea></div>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Add to Gallery</button>
+      </form>
+    </div>
+    <div class="card-panel" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px;">
+      ${items.length? items.map(it=>`
+        <div style="border:1px solid var(--line); border-radius:8px; overflow:hidden;">
+          <img src="${trackedURL(it.photo)}" style="width:100%; height:100px; object-fit:cover;">
+          <div style="padding:8px;">
+            <div style="font-size:12px; margin-bottom:6px;">${esc(it.title||'Untitled')}</div>
+            <button class="btn btn-danger btn-sm" style="width:100%;" data-gdel="${it.id}">Delete</button>
+          </div>
+        </div>`).join('') : `<p style="color:var(--muted);">No gallery photos yet.</p>`}
+    </div>`;
+  $('#galUploadForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const files = Array.from(e.target.photos.files);
+    for(const file of files){
+      await dbAdd('gallery', {photo: await fileToBlob(file), title: fd.get('title'), description: fd.get('description'), date: fd.get('date')||new Date().toISOString().slice(0,10)});
+    }
+    toast(`${files.length} photo(s) added to gallery.`);
+    renderAdminGallery(); renderAllPublic();
+  });
+  $all('[data-gdel]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(confirm('Delete this photo?')){ await dbDelete('gallery', Number(b.dataset.gdel)); toast('Photo deleted.'); renderAdminGallery(); renderAllPublic(); }
+  }));
+}
+
+/* ---- Messages admin ---- */
+async function renderAdminMessages(){
+  const items = (await dbGetAll('messages')).sort((a,b)=>b.date.localeCompare(a.date));
+  const main = $('#adminMain');
+  main.innerHTML = `
+    <div class="admin-h1"><h2 style="margin:0;">Messages</h2></div>
+    <div class="card-panel" style="padding:0;">
+      <table class="admin-table">
+        <thead><tr><th></th><th>Name</th><th>Subject</th><th>Date</th><th style="text-align:right;">Actions</th></tr></thead>
+        <tbody>
+        ${items.length? items.map(m=>`
+          <tr class="msg-row ${m.read?'read':''}">
+            <td>${m.read?'':'<span class="badge-unread"></span>'}</td>
+            <td>${esc(m.name)}<br><span style="color:var(--muted); font-size:12px;">${esc(m.email)}</span></td>
+            <td>${esc(m.subject)}</td>
+            <td>${new Date(m.date).toLocaleDateString()}</td>
+            <td class="row-actions" style="justify-content:flex-end;">
+              <button class="btn btn-ghost btn-sm" data-view="${m.id}">View</button>
+              ${!m.read?`<button class="btn btn-ghost btn-sm" data-read="${m.id}">Mark Read</button>`:''}
+              <button class="btn btn-danger btn-sm" data-mdel="${m.id}">Delete</button>
+            </td>
+          </tr>`).join('') : `<tr><td colspan="5" style="text-align:center; color:var(--muted); padding:30px;">No messages yet.</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+  $all('[data-view]').forEach(b=>b.addEventListener('click', async ()=>{
+    const m = await dbGet('messages', Number(b.dataset.view));
+    alert(`From: ${m.name} <${m.email}>\nSubject: ${m.subject}\nDate: ${new Date(m.date).toLocaleString()}\n\n${m.message}`);
+    if(!m.read){ m.read=true; await dbPut('messages', m); renderAdminMessages(); }
+  }));
+  $all('[data-read]').forEach(b=>b.addEventListener('click', async ()=>{
+    const m = await dbGet('messages', Number(b.dataset.read)); m.read=true; await dbPut('messages', m); renderAdminMessages();
+  }));
+  $all('[data-mdel]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(confirm('Delete this message?')){ await dbDelete('messages', Number(b.dataset.mdel)); renderAdminMessages(); }
+  }));
+}
+
+/* ---- Contact settings admin ---- */
+async function renderAdminContactSettings(){
+  const s = await dbGet('meta','settings');
+  $('#adminMain').innerHTML = `
+    <div class="admin-h1"><h2 style="margin:0;">Contact Settings</h2></div>
+    <div class="card-panel">
+      <form id="contactSettingsForm">
+        <div class="form-grid">
+          <div class="field"><label>Contact Email</label><input type="email" name="contactEmail" value="${esc(s.contactEmail)}" placeholder="you@example.com"></div>
+          <div class="field"><label>Phone (optional)</label><input name="contactPhone" value="${esc(s.contactPhone)}"></div>
+          <div class="field full"><label>Location (optional)</label><input name="contactLocation" value="${esc(s.contactLocation)}"></div>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Save</button>
+      </form>
+    </div>`;
+  $('#contactSettingsForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    s.contactEmail = fd.get('contactEmail'); s.contactPhone = fd.get('contactPhone'); s.contactLocation = fd.get('contactLocation');
+    await dbPut('meta', s);
+    toast('Contact settings saved.');
+    renderContactInfo();
+  });
+}
+
+/* ---- Website settings admin (password change, session timeout) ---- */
+async function renderAdminSettings(){
+  const s = await dbGet('meta','settings');
+  $('#adminMain').innerHTML = `
+    <div class="admin-h1"><h2 style="margin:0;">Website Settings</h2></div>
+    <div class="card-panel">
+      <h3 style="margin-bottom:6px; font-size:15px;">Change Admin Password</h3>
+      <p style="margin-bottom:14px;">Note: since this site runs entirely in the browser with no server, this password protects against casual access only — it is not equivalent to server-side authentication. Keep it private.</p>
+      <form id="pwForm">
+        <div class="form-grid">
+          <div class="field"><label>Current Password</label><input type="password" name="current" required></div>
+          <div class="field"><label>New Password (min 6 chars)</label><input type="password" name="next" minlength="6" required></div>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Update Password</button>
+        <div class="form-msg" id="pwMsg"></div>
+      </form>
+    </div>
+    <div class="card-panel">
+      <h3 style="margin-bottom:6px; font-size:15px;">Session Timeout</h3>
+      <form id="timeoutForm">
+        <div class="field" style="max-width:220px;"><label>Auto-logout after (minutes)</label><input type="number" name="timeout" min="2" max="120" value="${s.sessionTimeoutMin||15}"></div>
+        <button class="btn btn-ghost btn-sm" type="submit">Save</button>
+      </form>
+    </div>`;
+  $('#pwForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const msgEl = $('#pwMsg');
+    const curHash = await sha256(fd.get('current'));
+    if(curHash !== s.adminPasswordHash){ msgEl.className='form-msg show err'; msgEl.textContent='Current password is incorrect.'; return; }
+    s.adminPasswordHash = await sha256(fd.get('next'));
+    await dbPut('meta', s);
+    msgEl.className='form-msg show ok'; msgEl.textContent='Password updated.';
+    e.target.reset();
+  });
+  $('#timeoutForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    s.sessionTimeoutMin = Number(new FormData(e.target).get('timeout'))||15;
+    await dbPut('meta', s);
+    toast('Session timeout updated.');
+    resetSessionTimer();
+  });
+}
+
+/* =========================================================================
+   BACKUP: EXPORT / IMPORT
+   ========================================================================= */
+async function blobFieldsToBase64(obj, blobKeys){
+  const out = {...obj};
+  for(const k of blobKeys){
+    if(out[k] instanceof Blob){ out[k] = {__blob:true, type:out[k].type, data: await readFileAsDataURL(out[k])}; }
+    else if(Array.isArray(out[k])){ out[k] = await Promise.all(out[k].map(async b=> b instanceof Blob ? {__blob:true, type:b.type, data: await readFileAsDataURL(b)} : b)); }
+    else if(out[k] && out[k].blob instanceof Blob){ out[k] = {name:out[k].name, __blob:true, type:out[k].blob.type, data: await readFileAsDataURL(out[k].blob)}; }
+  }
+  return out;
+}
+function base64FieldsToBlob(obj, blobKeys){
+  const out = {...obj};
+  for(const k of blobKeys){
+    const v = out[k];
+    if(v && v.__blob){ out[k] = dataURLtoBlob(v.data); }
+    else if(Array.isArray(v)){ out[k] = v.map(b => b && b.__blob ? dataURLtoBlob(b.data) : b); }
+    else if(v && v.__blob===undefined && v.data){ out[k] = {name:v.name, blob:dataURLtoBlob(v.data)}; }
+  }
+  return out;
+}
+
+async function exportBackup(){
+  $('#backupHint').textContent = 'Preparing export…';
+  try{
+    const data = await gatherExportData();
+    const safeSettings = {...data.settings}; // includes password hash intentionally so restoring keeps admin access
+    data.settings = safeSettings;
+    downloadJSON(data, `ankit-sharma-portfolio-backup-${new Date().toISOString().slice(0,10)}.json`);
+    $('#backupHint').textContent = 'Export complete. Keep this file private — it includes your admin password hash.';
+  }catch(err){
+    $('#backupHint').textContent = 'Export failed: '+err.message;
+  }
+}
+
+async function exportPublicData(){
+  $('#publicExportHint').textContent = 'Preparing…';
+  try{
+    const data = await gatherExportData();
+    const safeSettings = {...data.settings};
+    delete safeSettings.adminPasswordHash; // never publish the password hash to a public repo
+    data.settings = safeSettings;
+    delete data.messages; // not needed publicly
+    downloadJSON(data, 'portfolio-data.json');
+    $('#publicExportHint').textContent = 'Downloaded portfolio-data.json — commit it to the same folder as index.html on GitHub.';
+  }catch(err){
+    $('#publicExportHint').textContent = 'Export failed: '+err.message;
+  }
+}
+
+async function gatherExportData(){
+  const [about, settings, research, innovations, upcoming, certificates, skills, gallery, messages] = await Promise.all([
+    dbGet('meta','about'), dbGet('meta','settings'),
+    dbGetAll('research'), dbGetAll('innovations'), dbGetAll('upcoming'), dbGetAll('certificates'), dbGetAll('skills'), dbGetAll('gallery'), dbGetAll('messages')
+  ]);
+  return {
+    exportedAt: new Date().toISOString(),
+    about: await blobFieldsToBase64(about, ['photo']),
+    settings: {...settings},
+    research: await Promise.all(research.map(r=>blobFieldsToBase64(r,['mainPhoto','additionalPhotos','report']))),
+    innovations: await Promise.all(innovations.map(r=>blobFieldsToBase64(r,['mainPhoto','additionalPhotos','report']))),
+    upcoming: await Promise.all(upcoming.map(r=>blobFieldsToBase64(r,['photo']))),
+    certificates: await Promise.all(certificates.map(r=>blobFieldsToBase64(r,['photo','report']))),
+    skills: await Promise.all(skills.map(r=>blobFieldsToBase64(r,['photo']))),
+    gallery: await Promise.all(gallery.map(r=>blobFieldsToBase64(r,['photo']))),
+    messages
+  };
+}
+function downloadJSON(data, filename){
+  const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+}
+
+/* Applies a parsed backup/public-data object into IndexedDB. Used by manual
+   import and by the automatic first-visit seed from portfolio-data.json. */
+async function applyImportedData(data, opts){
+  opts = opts || {};
+  if(data.about) await dbPut('meta', {...base64FieldsToBlob(data.about,['photo']), key:'about'});
+  if(data.settings){
+    const s = {...data.settings, key:'settings'};
+    if(opts.stripPasswordHash) delete s.adminPasswordHash;
+    await dbPut('meta', s);
+  }
+  const mapStore = async (name, blobKeys)=>{
+    if(!Array.isArray(data[name])) return;
+    for(const rec of data[name]){
+      const r = base64FieldsToBlob(rec, blobKeys);
+      delete r.id;
+      await dbAdd(name, r);
+    }
+  };
+  await mapStore('research', ['mainPhoto','additionalPhotos','report']);
+  await mapStore('innovations', ['mainPhoto','additionalPhotos','report']);
+  await mapStore('upcoming', ['photo']);
+  await mapStore('certificates', ['photo','report']);
+  await mapStore('skills', ['photo']);
+  await mapStore('gallery', ['photo']);
+  if(!opts.skipMessages && Array.isArray(data.messages)){
+    for(const m of data.messages){ delete m.id; await dbAdd('messages', m); }
+  }
+}
+
+async function importBackup(file){
+  $('#backupHint').textContent = 'Importing…';
+  try{
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if(!confirm('Importing will merge/replace current portfolio data with the backup file. Continue?')) { $('#backupHint').textContent=''; return; }
+    await applyImportedData(data);
+    $('#backupHint').textContent = 'Import complete.';
+    toast('Backup imported.');
+    renderAdminDashboard();
+    renderAllPublic();
+  }catch(err){
+    $('#backupHint').textContent = 'Import failed: '+err.message;
+  }
+}
+
+/* =========================================================================
+   INIT
+   ========================================================================= */
+async function init(){
+  $('#year').textContent = new Date().getFullYear();
+  await openDB();
+  await seedIfEmpty();
+  initNav();
+  initReveal();
+  initHeroCanvas();
+  await renderAllPublic();
+}
+init();
+
+})();
+</script>
+</body>
+</html>
