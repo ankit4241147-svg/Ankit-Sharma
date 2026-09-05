@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ankit Sharma · Research &amp; Innovation Portfolio</title>
+<title>Ankit Sharma — Research &amp; Innovation Portfolio</title>
 <meta name="description" content="Ankit Sharma — +2 Science candidate, researcher, robotics enthusiast, programmer and innovator. Currently involved in IASC (NASO) asteroid discovery research.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%230F1420%22/><circle cx=%2250%22 cy=%2250%22 r=%2216%22 fill=%22%23E8A33D%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -419,7 +419,7 @@ footer .foot-admin button{background:none;border:none;color:var(--muted);text-de
       <div class="hero-text">
         <div class="hero-tag"><span class="dot"></span> STATUS: OPEN TO RESEARCH &amp; COLLABORATION</div>
         <h1>Hi, I'm <span class="cursive">Ankit Sharma</span></h1>
-        <div class="subtitle">RESEARCHER · ROBOTICS ENTHUSIAST · INNOVATOR</div>
+        <div class="subtitle">RESEARCHER · PROGRAMMER · ROBOTICS ENTHUSIAST · INNOVATOR</div>
         <p class="desc">Exploring technology, astronomy, robotics and ideas that can shape the future — one experiment at a time.</p>
         <div class="hero-actions">
           <a href="#research" class="btn btn-primary">Explore My Research</a>
@@ -567,13 +567,41 @@ footer .foot-admin button{background:none;border:none;color:var(--muted);text-de
     <h2>Admin Login</h2>
     <p>Sign in to manage portfolio content.</p>
     <form id="adminLoginForm">
+      <div class="field"><label for="adminUser">Username</label><input id="adminUser" required autocomplete="username"></div>
       <div class="field"><label for="adminPass">Password</label><input id="adminPass" type="password" required autocomplete="current-password"></div>
       <button type="submit" class="btn btn-primary btn-block">Login</button>
       <div class="form-msg" id="adminLoginMsg"></div>
     </form>
-    <div class="admin-notice" id="firstRunNotice" style="display:none;">
-      First-time setup: no admin password has been set yet. Enter a new password above to create it.
-    </div>
+  </div>
+</div>
+
+<!-- ============ FORGOT PASSWORD (recovery key flow) ============ -->
+<div class="modal-overlay" id="forgot-password-overlay">
+  <div class="modal-box" style="max-width:380px; padding:36px 32px;">
+    <button class="modal-close" data-close="forgot-password-overlay">✕</button>
+    <h2 style="font-size:20px; margin-bottom:4px;">Reset Password</h2>
+    <p style="font-size:13.5px;">Enter the recovery key you saved when you first set up your admin password.</p>
+    <form id="forgotStep1Form" style="display:block;">
+      <div class="field"><label for="recoveryKeyInput">Recovery Key</label><input id="recoveryKeyInput" required placeholder="XXXX-XXXX-XXXX-XXXX" style="font-family:var(--font-mono); letter-spacing:.03em;"></div>
+      <button type="submit" class="btn btn-primary btn-block">Verify Recovery Key</button>
+      <div class="form-msg" id="forgotStep1Msg"></div>
+    </form>
+    <form id="forgotStep2Form" style="display:none;">
+      <div class="field"><label for="newPassAfterReset">New Password (min 6 chars)</label><input id="newPassAfterReset" type="password" minlength="6" required></div>
+      <button type="submit" class="btn btn-primary btn-block">Set New Password</button>
+      <div class="form-msg" id="forgotStep2Msg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ RECOVERY KEY DISPLAY (shown once, after setup / regeneration) ============ -->
+<div class="modal-overlay" id="recovery-key-overlay">
+  <div class="modal-box" style="max-width:420px; padding:36px 32px;">
+    <h2 style="font-size:20px; margin-bottom:8px;">Save Your Recovery Key</h2>
+    <p style="font-size:13.5px;">This is the <strong>only</strong> way to reset your password if you forget it. It will not be shown again — store it somewhere safe (password manager, notes app, printed copy).</p>
+    <div id="recoveryKeyDisplay" style="font-family:var(--font-mono); font-size:19px; letter-spacing:.04em; background:var(--panel-2); border:1px solid var(--line); border-radius:8px; padding:16px; text-align:center; margin:18px 0; color:var(--accent); word-break:break-all;"></div>
+    <button class="btn btn-ghost btn-sm" id="copyRecoveryKeyBtn" type="button">Copy to Clipboard</button>
+    <button class="btn btn-primary btn-block" id="recoveryKeyDoneBtn" type="button" style="margin-top:12px;">I've Saved It — Continue</button>
   </div>
 </div>
 
@@ -614,76 +642,77 @@ footer .foot-admin button{background:none;border:none;color:var(--muted);text-de
 (function(){
 "use strict";
 
-/* ---------------- IndexedDB LAYER ---------------- */
-const DB_NAME = 'ankitPortfolioDB';
-const DB_VERSION = 1;
-const STORES = ['research','innovations','upcoming','certificates','skills','gallery','messages','meta'];
-let db;
+/* =========================================================================
+   API CONFIG — point this at your deployed Flask backend.
+   Local testing: http://localhost:5000
+   Production: your Render/Railway/Fly.io/PythonAnywhere URL, e.g.
+     https://ankit-portfolio-api.onrender.com
+   ========================================================================= */
+const API_BASE_URL = 'https://ankit7577.pythonanywhere.com';
 
-function openDB(){
-  return new Promise((resolve,reject)=>{
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = (e)=>{
-      const _db = e.target.result;
-      STORES.forEach(name=>{
-        if(!_db.objectStoreNames.contains(name)){
-          if(name==='meta'){ _db.createObjectStore(name,{keyPath:'key'}); }
-          else{ _db.createObjectStore(name,{keyPath:'id', autoIncrement:true}); }
-        }
-      });
-    };
-    req.onsuccess = (e)=>{ db = e.target.result; resolve(db); };
-    req.onerror = (e)=>{ reject(e); };
-  });
+/* ---------------- AUTH TOKEN ---------------- */
+let authToken = sessionStorage.getItem('ankitAdminToken') || null;
+function setAuthToken(token){ authToken = token; if(token) sessionStorage.setItem('ankitAdminToken', token); else sessionStorage.removeItem('ankitAdminToken'); }
+function authHeaders(json){
+  const h = {};
+  if(authToken) h['Authorization'] = 'Bearer '+authToken;
+  if(json) h['Content-Type'] = 'application/json';
+  return h;
 }
-function tx(store, mode='readonly'){ return db.transaction(store, mode).objectStore(store); }
-function dbGetAll(store){ return new Promise((res,rej)=>{ const r=tx(store).getAll(); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
-function dbGet(store,key){ return new Promise((res,rej)=>{ const r=tx(store).get(key); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
-function dbPut(store,val){ return new Promise((res,rej)=>{ const r=tx(store,'readwrite').put(val); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
-function dbAdd(store,val){ return new Promise((res,rej)=>{ const r=tx(store,'readwrite').add(val); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
-function dbDelete(store,key){ return new Promise((res,rej)=>{ const r=tx(store,'readwrite').delete(key); r.onsuccess=()=>res(); r.onerror=()=>rej(r.error); }); }
 
-/* ---------------- SEED DEFAULTS ---------------- */
-const DEFAULT_ABOUT = {
-  key:'about',
-  name:'Ankit Sharma',
-  education:'+2 Science Candidate — Aadikavi Bhanubhakta Campus',
-  bio:"Hi, I'm Ankit Sharma, a +2 Science candidate at Aadikavi Bhanubhakta Campus with a strong interest in research, robotics, programming, astronomy, and innovation. I am continuously learning programming languages, robotics, and emerging technologies.",
-  researchStatement:"I am currently working on IASC (International Astronomical Search Collaboration) through NASO for asteroid discovery research. My interests focus on research, experimentation, technology, and the future invention of new things.",
-  photo:null,
-  interests:['Research','Robotics','Programming','Astronomy','Artificial Intelligence','IoT','Innovation','Future Technologies']
-};
-const DEFAULT_SETTINGS = {
-  key:'settings',
-  contactEmail:'as7577951@gmail.com',
-  contactPhone:'',
-  contactLocation:'',
-  adminPasswordHash:null,
-  sessionTimeoutMin:15
+/* ---------------- LOW-LEVEL API HELPER ---------------- */
+async function apiFetch(path, opts){
+  opts = opts || {};
+  const res = await fetch(API_BASE_URL + path, opts);
+  let data = null;
+  try{ data = await res.json(); }catch(e){ /* no/invalid JSON body */ }
+  if(!res.ok){
+    const msg = (data && data.error) ? data.error : `Request failed (${res.status})`;
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
+  }
+  return data;
+}
+
+/* ---------------- DATA LAYER (maps old store-based calls onto the REST API) ---------------- */
+const STORE_ENDPOINTS = {
+  research:'/api/research', innovations:'/api/innovations', upcoming:'/api/upcoming',
+  certificates:'/api/certificates', skills:'/api/skills', gallery:'/api/gallery'
 };
 
-/* On a brand-new browser (no local data yet), try to auto-load
-   ./portfolio-data.json — the file you export from Admin and commit
-   next to index.html — so every visitor sees the same real content.
-   Falls back to empty placeholder content if that file isn't present
-   (e.g. when testing locally via file:// before it's been published). */
-async function seedIfEmpty(){
-  const aboutMeta = await dbGet('meta','about');
-  if(aboutMeta) return; // this browser already has data — never overwrite it automatically
+async function dbGetAll(store){
+  return apiFetch(STORE_ENDPOINTS[store]);
+}
+async function dbGet(store, key){
+  if(store==='meta'){
+    return key==='about' ? apiFetch('/api/about') : apiFetch('/api/settings');
+  }
+  return apiFetch(`${STORE_ENDPOINTS[store]}/${key}`);
+}
+async function dbPut(store, val){
+  if(store==='meta'){
+    const path = val.key==='about' ? '/api/about' : '/api/settings';
+    return apiFetch(path, {method:'PUT', headers:authHeaders(true), body:JSON.stringify(val)});
+  }
+  return apiFetch(`${STORE_ENDPOINTS[store]}/${val.id}`, {method:'PUT', headers:authHeaders(true), body:JSON.stringify(val)});
+}
+async function dbAdd(store, val){
+  const created = await apiFetch(STORE_ENDPOINTS[store], {method:'POST', headers:authHeaders(true), body:JSON.stringify(val)});
+  return created.id;
+}
+async function dbDelete(store, key){
+  return apiFetch(`${STORE_ENDPOINTS[store]}/${key}`, {method:'DELETE', headers:authHeaders(false)});
+}
 
-  let loadedFromFile = false;
-  try{
-    const res = await fetch('./portfolio-data.json', {cache:'no-store'});
-    if(res.ok){
-      const data = await res.json();
-      await applyImportedData(data, {stripPasswordHash:true, skipMessages:true});
-      loadedFromFile = true;
-    }
-  }catch(e){ /* no bundled file yet, or running from file:// — that's fine */ }
-
-  if(!(await dbGet('meta','about'))) await dbPut('meta', DEFAULT_ABOUT);
-  if(!(await dbGet('meta','settings'))) await dbPut('meta', DEFAULT_SETTINGS);
-  return loadedFromFile;
+/* Uploads a file to the backend and returns its public URL (relative path). */
+async function uploadFile(file){
+  const fd = new FormData();
+  fd.append('file', file);
+  const res = await fetch(API_BASE_URL + '/api/upload', {method:'POST', headers:authHeaders(false), body:fd});
+  const data = await res.json().catch(()=>null);
+  if(!res.ok) throw new Error((data && data.error) || 'Upload failed.');
+  return data.url;
 }
 
 /* ---------------- UTILITIES ---------------- */
@@ -696,22 +725,16 @@ function toast(msg){
   const t=$('#toast'); t.textContent=msg; t.classList.add('show');
   clearTimeout(toast._h); toast._h=setTimeout(()=>t.classList.remove('show'),2600);
 }
-const objectUrls = [];
-function trackedURL(blob){ if(!blob) return ''; const u=URL.createObjectURL(blob); objectUrls.push(u); return u; }
-function revokeAllTracked(){ objectUrls.splice(0).forEach(u=>URL.revokeObjectURL(u)); }
-
-async function fileToBlob(file){ return file; }
-function readFileAsDataURL(blob){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(blob); }); }
-function dataURLtoBlob(dataurl){
-  const arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]);
-  let n = bstr.length; const u8 = new Uint8Array(n);
-  while(n--){ u8[n]=bstr.charCodeAt(n); }
-  return new Blob([u8],{type:mime});
+/* Resolves a stored value (a URL returned by the backend) to a full,
+   loadable URL. Kept as `trackedURL` for compatibility with render code
+   written when photos were local Blobs — there's nothing to revoke now
+   since the backend serves real files, so this is just a URL resolver. */
+function trackedURL(url){
+  if(!url) return '';
+  if(/^https?:\/\//i.test(url) || url.startsWith('data:')) return url;
+  return API_BASE_URL + url;
 }
-async function sha256(text){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
+function revokeAllTracked(){ /* no-op — images are server-hosted URLs now, nothing to revoke */ }
 
 /* ---------------- REVEAL ON SCROLL ---------------- */
 function initReveal(){
@@ -964,8 +987,8 @@ async function openDetail(store, id){
   const extra = (it.additionalPhotos||[]).map(b=>`<img src="${trackedURL(b)}" alt="Additional photo" data-lb="1">`).join('');
   const tech = (it.tech||[]).length ? `<div class="tech-tags">${it.tech.map(t=>`<span class="tech-tag">${esc(t)}</span>`).join('')}</div>` : '';
   const reportBtns = it.report ? `
-    <a class="btn btn-ghost btn-sm" href="${trackedURL(it.report.blob)}" target="_blank" rel="noopener">View Report</a>
-    <a class="btn btn-ghost btn-sm" href="${trackedURL(it.report.blob)}" download="${esc(it.report.name||'report.pdf')}">Download Report</a>` : '';
+    <a class="btn btn-ghost btn-sm" href="${trackedURL(it.report.url)}" target="_blank" rel="noopener">View Report</a>
+    <a class="btn btn-ghost btn-sm" href="${trackedURL(it.report.url)}" download="${esc(it.report.name||'report.pdf')}">Download Report</a>` : '';
   $('#detailModalContent').innerHTML = `
     ${heroImg}
     <div class="modal-body">
@@ -1008,46 +1031,27 @@ function gmailComposeUrl(to, subject){
 }
 
 /* =========================================================================
-   ADMIN AUTH
+   ADMIN AUTH (fixed username/password — no self-service reset)
    ========================================================================= */
-const SESSION_KEY = 'ankitAdminSession';
 let sessionTimer = null;
 
-async function isFirstRun(){ const s = await dbGet('meta','settings'); return !s.adminPasswordHash; }
-
-async function handleAdminLogin(password){
-  const s = await dbGet('meta','settings');
-  if(!s.adminPasswordHash){
-    if(password.length < 6){ throw new Error('Choose a password with at least 6 characters.'); }
-    const hash = await sha256(password);
-    s.adminPasswordHash = hash;
-    await dbPut('meta', s);
-    startSession();
-    return;
-  }
-  const hash = await sha256(password);
-  if(hash !== s.adminPasswordHash){ throw new Error('Incorrect password.'); }
-  startSession();
-}
-
-function startSession(){
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify({loggedIn:true, ts:Date.now()}));
+async function handleAdminLogin(username, password){
+  const data = await apiFetch('/api/auth/login', {method:'POST', headers:authHeaders(true), body:JSON.stringify({username, password})});
+  setAuthToken(data.token);
   resetSessionTimer();
 }
-function isSessionActive(){
-  const raw = sessionStorage.getItem(SESSION_KEY);
-  if(!raw) return false;
-  try{ return JSON.parse(raw).loggedIn === true; }catch(e){ return false; }
-}
+
+function isSessionActive(){ return !!authToken; }
 async function resetSessionTimer(){
   clearTimeout(sessionTimer);
-  const s = await dbGet('meta','settings');
-  const mins = (s && s.sessionTimeoutMin) || 15;
+  let mins = 15;
+  try{ const s = await dbGet('meta','settings'); mins = s.sessionTimeoutMin || 15; }catch(e){ /* ignore */ }
   sessionTimer = setTimeout(()=>{ adminLogout(true); }, mins*60*1000);
 }
-function endSession(){ sessionStorage.removeItem(SESSION_KEY); clearTimeout(sessionTimer); }
+function endSession(){ setAuthToken(null); clearTimeout(sessionTimer); }
 
 function adminLogout(timedOut){
+  if(authToken){ apiFetch('/api/auth/logout', {method:'POST', headers:authHeaders(false)}).catch(()=>{}); }
   endSession();
   $('#admin-shell').classList.remove('open');
   document.body.style.overflow='';
@@ -1063,17 +1067,17 @@ $('#adminOpenBtn').addEventListener('click', openAdminEntry);
 $('#adminOpenBtn2').addEventListener('click', openAdminEntry);
 async function openAdminEntry(){
   if(isSessionActive()){ openAdminShell(); return; }
-  $('#firstRunNotice').style.display = (await isFirstRun()) ? 'block' : 'none';
   $('#adminLoginMsg').className='form-msg';
-  $('#adminPass').value='';
+  $('#adminUser').value=''; $('#adminPass').value='';
   openModal('admin-login-overlay');
-  setTimeout(()=>$('#adminPass').focus(),50);
+  setTimeout(()=>$('#adminUser').focus(),50);
 }
+
 $('#adminLoginForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const msgEl = $('#adminLoginMsg');
   try{
-    await handleAdminLogin($('#adminPass').value);
+    await handleAdminLogin($('#adminUser').value, $('#adminPass').value);
     closeModal('admin-login-overlay');
     openAdminShell();
   }catch(err){
@@ -1135,24 +1139,13 @@ async function renderAdminDashboard(){
       ${statCard('Skills', skills.length)}
       ${statCard('Gallery Photos', gallery.length)}
     </div>
-    <div class="card-panel" style="border-color:rgba(232,163,61,.4);">
-      <h3 style="margin-bottom:6px;">Publish to GitHub Pages</h3>
-      <p style="margin-bottom:14px;">This site stores everything in <em>this browser only</em>. For visitors on GitHub Pages to see your real content, download <code style="font-family:var(--font-mono);">portfolio-data.json</code> below and commit it to the same folder as <code style="font-family:var(--font-mono);">index.html</code> in your repo. New visitors' browsers will load it automatically. Your admin password is never included in this file.</p>
-      <button class="btn btn-primary btn-sm" id="exportPublicBtn">Export Public Data (portfolio-data.json)</button>
-      <div class="hint" id="publicExportHint" style="margin-top:10px;"></div>
-    </div>
     <div class="card-panel">
-      <h3 style="margin-bottom:6px;">Personal Backup</h3>
-      <p style="margin-bottom:14px;">Export a full personal backup (includes your admin password hash — keep this file private, do not commit it to a public repo), or restore from a previous backup.</p>
-      <div style="display:flex; gap:12px; flex-wrap:wrap;">
-        <button class="btn btn-ghost btn-sm" id="exportBtn">Export Portfolio Data</button>
-        <label class="btn btn-ghost btn-sm" style="margin:0;">Import Portfolio Data<input type="file" accept=".json" id="importInput" style="display:none;"></label>
-      </div>
+      <h3 style="margin-bottom:6px;">Backup</h3>
+      <p style="margin-bottom:14px;">Download a JSON snapshot of all your text content (uploaded images and reports stay on the server in <code style="font-family:var(--font-mono);">/uploads</code> and aren't included in this file).</p>
+      <button class="btn btn-ghost btn-sm" id="exportBtn">Download Backup (JSON)</button>
       <div class="hint" id="backupHint" style="margin-top:10px;"></div>
     </div>`;
   $('#exportBtn').addEventListener('click', exportBackup);
-  $('#exportPublicBtn').addEventListener('click', exportPublicData);
-  $('#importInput').addEventListener('change', (e)=>{ if(e.target.files[0]) importBackup(e.target.files[0]); });
 }
 function statCard(label, n){ return `<div class="stat-card"><div class="n">${n}</div><div class="l">${label.toUpperCase()}</div></div>`; }
 
@@ -1190,10 +1183,12 @@ async function renderAdminAbout(){
     a.researchStatement = fd.get('researchStatement');
     a.interests = fd.get('interests').split(',').map(s=>s.trim()).filter(Boolean);
     const file = form.photo.files[0];
-    if(file) a.photo = await fileToBlob(file);
-    await dbPut('meta', a);
-    toast('About section saved.');
-    renderAllPublic();
+    try{
+      if(file) a.photo = await uploadFile(file);
+      await dbPut('meta', {...a, key:'about'});
+      toast('About section saved.');
+      renderAllPublic();
+    }catch(err){ toast('Save failed: '+err.message); }
   });
 }
 
@@ -1364,28 +1359,35 @@ async function showCrudForm(store, config, existing){
     e.preventDefault();
     const fd = new FormData(form);
     const record = isEdit ? {...data} : {};
-    for(const f of config.fields){
-      if(f.type==='image'){
-        const file = form[f.key].files[0];
-        if(file) record[f.key] = await fileToBlob(file);
-      } else if(f.type==='images'){
-        const files = Array.from(form[f.key].files);
-        if(files.length) record[f.key] = await Promise.all(files.map(fileToBlob));
-      } else if(f.type==='file'){
-        const file = form[f.key].files[0];
-        if(file) record[f.key] = {name:file.name, blob: await fileToBlob(file)};
-      } else if(f.type==='tags'){
-        record[f.key] = fd.get(f.key).split(',').map(s=>s.trim()).filter(Boolean);
-      } else {
-        record[f.key] = fd.get(f.key);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true; submitBtn.textContent = 'Saving…';
+    try{
+      for(const f of config.fields){
+        if(f.type==='image'){
+          const file = form[f.key].files[0];
+          if(file) record[f.key] = await uploadFile(file);
+        } else if(f.type==='images'){
+          const files = Array.from(form[f.key].files);
+          if(files.length) record[f.key] = await Promise.all(files.map(uploadFile));
+        } else if(f.type==='file'){
+          const file = form[f.key].files[0];
+          if(file){ const url = await uploadFile(file); record[f.key] = {name:file.name, url}; }
+        } else if(f.type==='tags'){
+          record[f.key] = fd.get(f.key).split(',').map(s=>s.trim()).filter(Boolean);
+        } else {
+          record[f.key] = fd.get(f.key);
+        }
       }
+      if(isEdit){ record.id = existing.id; await dbPut(store, record); }
+      else { await dbAdd(store, record); }
+      toast(`${config.title} saved.`);
+      host.innerHTML='';
+      renderAdminCrudList(store, config, config.title);
+      renderAllPublic();
+    }catch(err){
+      toast('Save failed: '+err.message);
+      submitBtn.disabled = false; submitBtn.textContent = 'Save';
     }
-    if(isEdit){ record.id = existing.id; await dbPut(store, record); }
-    else { await dbAdd(store, record); }
-    toast(`${config.title} saved.`);
-    host.innerHTML='';
-    renderAdminCrudList(store, config, config.title);
-    renderAllPublic();
   });
 }
 
@@ -1467,12 +1469,14 @@ async function showSkillForm(existing, nextOrder){
     const rec = existing ? {...existing} : {order: nextOrder||0};
     rec.name = fd.get('name'); rec.category = fd.get('category'); rec.level = fd.get('level'); rec.description = fd.get('description');
     const file = form.photo.files[0];
-    if(file) rec.photo = await fileToBlob(file);
-    if(existing){ rec.id = existing.id; await dbPut('skills', rec); } else { await dbAdd('skills', rec); }
-    toast('Skill saved.');
-    host.innerHTML='';
-    renderAdminSkills();
-    renderAllPublic();
+    try{
+      if(file) rec.photo = await uploadFile(file);
+      if(existing){ rec.id = existing.id; await dbPut('skills', rec); } else { await dbAdd('skills', rec); }
+      toast('Skill saved.');
+      host.innerHTML='';
+      renderAdminSkills();
+      renderAllPublic();
+    }catch(err){ toast('Save failed: '+err.message); }
   });
 }
 
@@ -1508,52 +1512,22 @@ async function renderAdminGallery(){
     e.preventDefault();
     const fd = new FormData(e.target);
     const files = Array.from(e.target.photos.files);
-    for(const file of files){
-      await dbAdd('gallery', {photo: await fileToBlob(file), title: fd.get('title'), description: fd.get('description'), date: fd.get('date')||new Date().toISOString().slice(0,10)});
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true; submitBtn.textContent = 'Uploading…';
+    try{
+      for(const file of files){
+        const url = await uploadFile(file);
+        await dbAdd('gallery', {photo:url, title: fd.get('title'), description: fd.get('description'), date: fd.get('date')||new Date().toISOString().slice(0,10)});
+      }
+      toast(`${files.length} photo(s) added to gallery.`);
+      renderAdminGallery(); renderAllPublic();
+    }catch(err){
+      toast('Upload failed: '+err.message);
+      submitBtn.disabled = false; submitBtn.textContent = 'Add to Gallery';
     }
-    toast(`${files.length} photo(s) added to gallery.`);
-    renderAdminGallery(); renderAllPublic();
   });
   $all('[data-gdel]').forEach(b=>b.addEventListener('click', async ()=>{
     if(confirm('Delete this photo?')){ await dbDelete('gallery', Number(b.dataset.gdel)); toast('Photo deleted.'); renderAdminGallery(); renderAllPublic(); }
-  }));
-}
-
-/* ---- Messages admin ---- */
-async function renderAdminMessages(){
-  const items = (await dbGetAll('messages')).sort((a,b)=>b.date.localeCompare(a.date));
-  const main = $('#adminMain');
-  main.innerHTML = `
-    <div class="admin-h1"><h2 style="margin:0;">Messages</h2></div>
-    <div class="card-panel" style="padding:0;">
-      <table class="admin-table">
-        <thead><tr><th></th><th>Name</th><th>Subject</th><th>Date</th><th style="text-align:right;">Actions</th></tr></thead>
-        <tbody>
-        ${items.length? items.map(m=>`
-          <tr class="msg-row ${m.read?'read':''}">
-            <td>${m.read?'':'<span class="badge-unread"></span>'}</td>
-            <td>${esc(m.name)}<br><span style="color:var(--muted); font-size:12px;">${esc(m.email)}</span></td>
-            <td>${esc(m.subject)}</td>
-            <td>${new Date(m.date).toLocaleDateString()}</td>
-            <td class="row-actions" style="justify-content:flex-end;">
-              <button class="btn btn-ghost btn-sm" data-view="${m.id}">View</button>
-              ${!m.read?`<button class="btn btn-ghost btn-sm" data-read="${m.id}">Mark Read</button>`:''}
-              <button class="btn btn-danger btn-sm" data-mdel="${m.id}">Delete</button>
-            </td>
-          </tr>`).join('') : `<tr><td colspan="5" style="text-align:center; color:var(--muted); padding:30px;">No messages yet.</td></tr>`}
-        </tbody>
-      </table>
-    </div>`;
-  $all('[data-view]').forEach(b=>b.addEventListener('click', async ()=>{
-    const m = await dbGet('messages', Number(b.dataset.view));
-    alert(`From: ${m.name} <${m.email}>\nSubject: ${m.subject}\nDate: ${new Date(m.date).toLocaleString()}\n\n${m.message}`);
-    if(!m.read){ m.read=true; await dbPut('messages', m); renderAdminMessages(); }
-  }));
-  $all('[data-read]').forEach(b=>b.addEventListener('click', async ()=>{
-    const m = await dbGet('messages', Number(b.dataset.read)); m.read=true; await dbPut('messages', m); renderAdminMessages();
-  }));
-  $all('[data-mdel]').forEach(b=>b.addEventListener('click', async ()=>{
-    if(confirm('Delete this message?')){ await dbDelete('messages', Number(b.dataset.mdel)); renderAdminMessages(); }
   }));
 }
 
@@ -1575,29 +1549,22 @@ async function renderAdminContactSettings(){
   $('#contactSettingsForm').addEventListener('submit', async (e)=>{
     e.preventDefault();
     const fd = new FormData(e.target);
-    s.contactEmail = fd.get('contactEmail'); s.contactPhone = fd.get('contactPhone'); s.contactLocation = fd.get('contactLocation');
-    await dbPut('meta', s);
-    toast('Contact settings saved.');
-    renderContactInfo();
+    try{
+      await dbPut('meta', {key:'settings', contactEmail:fd.get('contactEmail'), contactPhone:fd.get('contactPhone'), contactLocation:fd.get('contactLocation'), sessionTimeoutMin:s.sessionTimeoutMin});
+      toast('Contact settings saved.');
+      renderContactInfo();
+    }catch(err){ toast('Save failed: '+err.message); }
   });
 }
 
-/* ---- Website settings admin (password change, session timeout) ---- */
+/* ---- Website settings admin (password change, recovery key, session timeout) ---- */
 async function renderAdminSettings(){
   const s = await dbGet('meta','settings');
   $('#adminMain').innerHTML = `
     <div class="admin-h1"><h2 style="margin:0;">Website Settings</h2></div>
     <div class="card-panel">
-      <h3 style="margin-bottom:6px; font-size:15px;">Change Admin Password</h3>
-      <p style="margin-bottom:14px;">Note: since this site runs entirely in the browser with no server, this password protects against casual access only — it is not equivalent to server-side authentication. Keep it private.</p>
-      <form id="pwForm">
-        <div class="form-grid">
-          <div class="field"><label>Current Password</label><input type="password" name="current" required></div>
-          <div class="field"><label>New Password (min 6 chars)</label><input type="password" name="next" minlength="6" required></div>
-        </div>
-        <button class="btn btn-primary btn-sm" type="submit">Update Password</button>
-        <div class="form-msg" id="pwMsg"></div>
-      </form>
+      <h3 style="margin-bottom:6px; font-size:15px;">Admin Login</h3>
+      <p style="margin:0;">Username and password are fixed in the backend's <code style="font-family:var(--font-mono);">app.py</code> — edit <code style="font-family:var(--font-mono);">ADMIN_USERNAME</code> / <code style="font-family:var(--font-mono);">ADMIN_PASSWORD</code> there and restart the server to change them.</p>
     </div>
     <div class="card-panel">
       <h3 style="margin-bottom:6px; font-size:15px;">Session Timeout</h3>
@@ -1605,146 +1572,41 @@ async function renderAdminSettings(){
         <div class="field" style="max-width:220px;"><label>Auto-logout after (minutes)</label><input type="number" name="timeout" min="2" max="120" value="${s.sessionTimeoutMin||15}"></div>
         <button class="btn btn-ghost btn-sm" type="submit">Save</button>
       </form>
+    </div>
+    <div class="card-panel" style="border-color:rgba(232,163,61,.4);">
+      <h3 style="margin-bottom:6px; font-size:15px;">Backend Connection</h3>
+      <p style="margin:0;">This site is currently talking to: <code style="font-family:var(--font-mono); color:var(--accent-2);">${esc(API_BASE_URL)}</code><br>Change <code style="font-family:var(--font-mono);">API_BASE_URL</code> near the top of the script to point at a different backend deployment.</p>
     </div>`;
-  $('#pwForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const msgEl = $('#pwMsg');
-    const curHash = await sha256(fd.get('current'));
-    if(curHash !== s.adminPasswordHash){ msgEl.className='form-msg show err'; msgEl.textContent='Current password is incorrect.'; return; }
-    s.adminPasswordHash = await sha256(fd.get('next'));
-    await dbPut('meta', s);
-    msgEl.className='form-msg show ok'; msgEl.textContent='Password updated.';
-    e.target.reset();
-  });
   $('#timeoutForm').addEventListener('submit', async (e)=>{
     e.preventDefault();
-    s.sessionTimeoutMin = Number(new FormData(e.target).get('timeout'))||15;
-    await dbPut('meta', s);
-    toast('Session timeout updated.');
-    resetSessionTimer();
+    const mins = Number(new FormData(e.target).get('timeout'))||15;
+    try{
+      await dbPut('meta', {key:'settings', contactEmail:s.contactEmail, contactPhone:s.contactPhone, contactLocation:s.contactLocation, sessionTimeoutMin:mins});
+      toast('Session timeout updated.');
+      resetSessionTimer();
+    }catch(err){ toast('Save failed: '+err.message); }
   });
 }
 
 /* =========================================================================
-   BACKUP: EXPORT / IMPORT
+   BACKUP: EXPORT (download only — the backend is the single source of
+   truth, so "import" isn't needed the way it was for the old browser-only
+   IndexedDB version. Restoring from a JSON file would mean re-creating
+   records via the API, which you can still do by hand if ever needed.)
    ========================================================================= */
-async function blobFieldsToBase64(obj, blobKeys){
-  const out = {...obj};
-  for(const k of blobKeys){
-    if(out[k] instanceof Blob){ out[k] = {__blob:true, type:out[k].type, data: await readFileAsDataURL(out[k])}; }
-    else if(Array.isArray(out[k])){ out[k] = await Promise.all(out[k].map(async b=> b instanceof Blob ? {__blob:true, type:b.type, data: await readFileAsDataURL(b)} : b)); }
-    else if(out[k] && out[k].blob instanceof Blob){ out[k] = {name:out[k].name, __blob:true, type:out[k].blob.type, data: await readFileAsDataURL(out[k].blob)}; }
-  }
-  return out;
-}
-function base64FieldsToBlob(obj, blobKeys){
-  const out = {...obj};
-  for(const k of blobKeys){
-    const v = out[k];
-    if(v && v.__blob){ out[k] = dataURLtoBlob(v.data); }
-    else if(Array.isArray(v)){ out[k] = v.map(b => b && b.__blob ? dataURLtoBlob(b.data) : b); }
-    else if(v && v.__blob===undefined && v.data){ out[k] = {name:v.name, blob:dataURLtoBlob(v.data)}; }
-  }
-  return out;
-}
-
 async function exportBackup(){
-  $('#backupHint').textContent = 'Preparing export…';
+  const hintEl = $('#backupHint');
+  hintEl.textContent = 'Preparing export…';
   try{
-    const data = await gatherExportData();
-    const safeSettings = {...data.settings}; // includes password hash intentionally so restoring keeps admin access
-    data.settings = safeSettings;
-    downloadJSON(data, `ankit-sharma-portfolio-backup-${new Date().toISOString().slice(0,10)}.json`);
-    $('#backupHint').textContent = 'Export complete. Keep this file private — it includes your admin password hash.';
+    const data = await apiFetch('/api/export', {headers:authHeaders(false)});
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `ankit-sharma-portfolio-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    hintEl.textContent = 'Export complete.';
   }catch(err){
-    $('#backupHint').textContent = 'Export failed: '+err.message;
-  }
-}
-
-async function exportPublicData(){
-  $('#publicExportHint').textContent = 'Preparing…';
-  try{
-    const data = await gatherExportData();
-    const safeSettings = {...data.settings};
-    delete safeSettings.adminPasswordHash; // never publish the password hash to a public repo
-    data.settings = safeSettings;
-    delete data.messages; // not needed publicly
-    downloadJSON(data, 'portfolio-data.json');
-    $('#publicExportHint').textContent = 'Downloaded portfolio-data.json — commit it to the same folder as index.html on GitHub.';
-  }catch(err){
-    $('#publicExportHint').textContent = 'Export failed: '+err.message;
-  }
-}
-
-async function gatherExportData(){
-  const [about, settings, research, innovations, upcoming, certificates, skills, gallery, messages] = await Promise.all([
-    dbGet('meta','about'), dbGet('meta','settings'),
-    dbGetAll('research'), dbGetAll('innovations'), dbGetAll('upcoming'), dbGetAll('certificates'), dbGetAll('skills'), dbGetAll('gallery'), dbGetAll('messages')
-  ]);
-  return {
-    exportedAt: new Date().toISOString(),
-    about: await blobFieldsToBase64(about, ['photo']),
-    settings: {...settings},
-    research: await Promise.all(research.map(r=>blobFieldsToBase64(r,['mainPhoto','additionalPhotos','report']))),
-    innovations: await Promise.all(innovations.map(r=>blobFieldsToBase64(r,['mainPhoto','additionalPhotos','report']))),
-    upcoming: await Promise.all(upcoming.map(r=>blobFieldsToBase64(r,['photo']))),
-    certificates: await Promise.all(certificates.map(r=>blobFieldsToBase64(r,['photo','report']))),
-    skills: await Promise.all(skills.map(r=>blobFieldsToBase64(r,['photo']))),
-    gallery: await Promise.all(gallery.map(r=>blobFieldsToBase64(r,['photo']))),
-    messages
-  };
-}
-function downloadJSON(data, filename){
-  const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  a.click();
-}
-
-/* Applies a parsed backup/public-data object into IndexedDB. Used by manual
-   import and by the automatic first-visit seed from portfolio-data.json. */
-async function applyImportedData(data, opts){
-  opts = opts || {};
-  if(data.about) await dbPut('meta', {...base64FieldsToBlob(data.about,['photo']), key:'about'});
-  if(data.settings){
-    const s = {...data.settings, key:'settings'};
-    if(opts.stripPasswordHash) delete s.adminPasswordHash;
-    await dbPut('meta', s);
-  }
-  const mapStore = async (name, blobKeys)=>{
-    if(!Array.isArray(data[name])) return;
-    for(const rec of data[name]){
-      const r = base64FieldsToBlob(rec, blobKeys);
-      delete r.id;
-      await dbAdd(name, r);
-    }
-  };
-  await mapStore('research', ['mainPhoto','additionalPhotos','report']);
-  await mapStore('innovations', ['mainPhoto','additionalPhotos','report']);
-  await mapStore('upcoming', ['photo']);
-  await mapStore('certificates', ['photo','report']);
-  await mapStore('skills', ['photo']);
-  await mapStore('gallery', ['photo']);
-  if(!opts.skipMessages && Array.isArray(data.messages)){
-    for(const m of data.messages){ delete m.id; await dbAdd('messages', m); }
-  }
-}
-
-async function importBackup(file){
-  $('#backupHint').textContent = 'Importing…';
-  try{
-    const text = await file.text();
-    const data = JSON.parse(text);
-    if(!confirm('Importing will merge/replace current portfolio data with the backup file. Continue?')) { $('#backupHint').textContent=''; return; }
-    await applyImportedData(data);
-    $('#backupHint').textContent = 'Import complete.';
-    toast('Backup imported.');
-    renderAdminDashboard();
-    renderAllPublic();
-  }catch(err){
-    $('#backupHint').textContent = 'Import failed: '+err.message;
+    hintEl.textContent = 'Export failed: '+err.message;
   }
 }
 
@@ -1753,16 +1615,34 @@ async function importBackup(file){
    ========================================================================= */
 async function init(){
   $('#year').textContent = new Date().getFullYear();
-  await openDB();
-  await seedIfEmpty();
   initNav();
   initReveal();
   initHeroCanvas();
-  await renderAllPublic();
+  try{
+    await renderAllPublic();
+  }catch(err){
+    console.error('Failed to load content from API:', err);
+    showApiErrorBanner(err);
+  }
+}
+function showApiErrorBanner(err){
+  const bar = $('#apiErrorBanner') || document.createElement('div');
+  bar.id = 'apiErrorBanner';
+  bar.style.cssText = 'position:fixed; top:0; left:0; right:0; z-index:999; background:#3a1c1c; color:#ffd7d0; font-family:var(--font-mono); font-size:13px; text-align:center; padding:10px 16px; border-bottom:1px solid #7a3b34;';
+  const isNetworkFailure = err && err.status === undefined; // fetch() itself threw (network/CORS) vs a real HTTP error status from the server
+  const detail = isNetworkFailure
+    ? `Browser could not connect at all (network or CORS block) — raw error: <code>${esc(err && err.message || 'unknown')}</code>`
+    : `Server responded with an error (HTTP ${err.status}) — <code>${esc(err.message || 'no detail')}</code>. The connection works; this route is failing on the backend.`;
+  bar.innerHTML = `Could not load content from <strong>${esc(API_BASE_URL)}</strong>. ${detail} <button id="apiRetryBtn" style="margin-left:10px; background:#7a3b34; color:#fff; border:none; padding:4px 10px; border-radius:5px; cursor:pointer; font-family:inherit; font-size:12px;">Retry</button>`;
+  if(!bar.parentNode) document.body.prepend(bar);
+  $('#apiRetryBtn').addEventListener('click', async ()=>{
+    try{ await renderAllPublic(); bar.remove(); }
+    catch(e){ showApiErrorBanner(e); }
+  });
 }
 init();
 
 })();
 </script>
 </body>
-</html>
+</html>s
